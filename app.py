@@ -21,7 +21,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 app.config['SQLAlchemy_Track_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
-app.secret_key = 'jose'
+app.secret_key = os.environ.get('JWT_SECRET_KEY', '')
 api = Api(app)
 
 jwt = JWTManager(app)
