@@ -58,10 +58,11 @@ class UserModel(db.Model):
     def send_conf_email(self) -> Response:
         link = request.url_root[0:-1] + url_for("userconfirm", user_id=self.id)
 
-        return post(f"https://api.mailgun.net/v3/xxxxx/messages",
-            auth=("api", "xxxxx"),
+        return post(
+            f"{os.environ.get('MAILGUN_BASE_URL','')}/messages",
+            auth=("api", f"{os.environ.get('MAILGUN_API_KEY','')}",
             data={
-                "from": f"xxxxx",
+                "from": f"{os.environ.get('MAILGUN_EMAIL','')}",
                 "to": self.email,
                 "subject": "Registration confirmation",
                 "text": f"Please click the link to confirm your registration: {link}",
