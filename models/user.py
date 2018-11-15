@@ -1,3 +1,4 @@
+import os
 from db import db
 from flask import jsonify, request, url_for
 from sqlalchemy import or_
@@ -31,7 +32,7 @@ class UserModel(db.Model):
     @classmethod
     def find_by_username(cls, login):
         return cls.query.filter_by(login=login).first()
-    
+
     @classmethod
     def find_by_id(cls, _id):
         return cls.query.filter_by(id=_id).first()
@@ -66,4 +67,3 @@ class UserModel(db.Model):
                 "text": f"Please click the link to confirm your registration: {link}",
             },
         )
-
