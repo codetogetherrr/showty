@@ -66,5 +66,5 @@ class UserModel(db.Model):
                 "to": self.email,
                 "subject": "Registration confirmation",
                 "text": f"Please click the link to confirm your registration: {link}",
-            },
+            }
         )
