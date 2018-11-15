@@ -1,5 +1,3 @@
-import os
-
 from db import db
 from flask import jsonify, request, url_for
 from sqlalchemy import or_
@@ -33,7 +31,7 @@ class UserModel(db.Model):
     @classmethod
     def find_by_username(cls, login):
         return cls.query.filter_by(login=login).first()
-
+    
     @classmethod
     def find_by_id(cls, _id):
         return cls.query.filter_by(id=_id).first()
@@ -59,12 +57,13 @@ class UserModel(db.Model):
     def send_conf_email(self) -> Response:
         link = request.url_root[0:-1] + url_for("userconfirm", user_id=self.id)
 
-        return post(f"{os.environ.get('MAILGUN_BASE_URL','')}/messages",
-                auth=("api", f"{os.environ.get('MAILGUN_API_KEY','')}",
-                data={
-                    "from": f"{os.environ.get('MAILGUN_EMAIL','')}",
-                    "to": self.email,
-                    "subject": "Registration confirmation",
-                    "text": f"Please click the link to confirm your registration: {link}",
+        return post(f"https://api.mailgun.net/v3/xxxxx/messages",
+            auth=("api", "xxxxx"),
+            data={
+                "from": f"xxxxx",
+                "to": self.email,
+                "subject": "Registration confirmation",
+                "text": f"Please click the link to confirm your registration: {link}",
             },
         )
+
