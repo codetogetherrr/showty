@@ -60,11 +60,10 @@ class UserModel(db.Model):
 
         return post(
             f"{os.environ.get('MAILGUN_BASE_URL','')}/messages",
-            auth=("api", f"{os.environ.get('MAILGUN_API_KEY','')}",
-            data={
-                "from": f"{os.environ.get('MAILGUN_EMAIL','')}",
+            auth=("api", f"{os.environ.get('MAILGUN_API_KEY','')}"),
+            data={"from": f"{os.environ.get('MAILGUN_EMAIL','')}",
                 "to": self.email,
                 "subject": "Registration confirmation",
                 "text": f"Please click the link to confirm your registration: {link}",
-            }
+            },
         )
