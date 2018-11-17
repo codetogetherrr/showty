@@ -27,7 +27,7 @@ class UserModel(db.Model):
         self.description = description
         self.gender = gender
         self.profile_photo = profile_photo
-        self.activated = activated
+
 
     @classmethod
     def find_by_username(cls, login):
