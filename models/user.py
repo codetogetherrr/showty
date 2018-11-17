@@ -18,7 +18,7 @@ class UserModel(db.Model):
     profile_photo = db.Column(db.String(255))
     activated = db.Column(db.Boolean, default=False)
 
-    def __init__(self, login, password, fullname, email, telephone, description, gender, profile_photo):
+    def __init__(self, login, password, fullname, email, telephone, description, gender, profile_photo, activated):
         self.login = login
         self.password = password
         self.fullname = fullname
