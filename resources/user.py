@@ -16,10 +16,11 @@ class UserRegister(Resource):
     parser.add_argument('description',type=str,required=False,help="Optional")
     parser.add_argument('gender',type=str,required=False,help="Optional")
     parser.add_argument('profile_photo',type=str,required=False,help="Optional")
+    parser.add_argument('activated',type=bool,required=False,help="Optional")
 
     def post(self):
         data = UserRegister.parser.parse_args()
-        
+
         if UserModel.find_by_username(data['login']):
             return {"message": "User with that login already exists."}, 400
         user=UserModel(data['login'],\
@@ -92,9 +93,8 @@ class UserConfirm(Resource):
         return make_response(render_template("confirmation_page.html", email=user.email), 200, headers)
 
 
-        
+
 
 class UsersList(Resource):
     def get(self):
         return {'users': [x.json() for x in UserModel.query.all()]}
-
