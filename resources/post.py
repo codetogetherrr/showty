@@ -24,7 +24,9 @@ class AllPostsUser(Resource):
 class Posts(Resource):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('post_link', type=str, required=True, help="This field cannot be left blank!")
+    parser.add_argument('image_id', type=str, required=True, help="This field cannot be left blank!")
+    parser.add_argument('image_width', type=int, required=True, help="This field cannot be left blank!")
+    parser.add_argument('image_height', type=int, required=True, help="This field cannot be left blank!")
     parser.add_argument('description', type=str, required=False, help="Optional")
 
     @jwt_required
@@ -33,8 +35,10 @@ class Posts(Resource):
         user_login = get_jwt_identity()
         current_time=func.now()
 
-        post=PostModel(data['post_link'],\
+        post=PostModel(data['image_id'],\
                         user_login,\
+                        data['image_height'],\
+                        data['image_width'],\
                         data['description'],\
                         current_time
                       )
