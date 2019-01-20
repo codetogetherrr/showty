@@ -15,10 +15,12 @@ class UserModel(db.Model):
     telephone = db.Column(db.String(80))
     description = db.Column(db.String(150))
     gender = db.Column(db.String(80))
-    profile_photo = db.Column(db.String(255))
+    image_id = db.Column(db.String(80))
+    image_height = db.Column(db.Integer)
+    image_width = db.Column(db.Integer)
     activated = db.Column(db.Boolean, default=False)
 
-    def __init__(self, login, password, fullname, email, telephone, description, gender, profile_photo):
+    def __init__(self, login, password, fullname, email, telephone, description, gender, image_id, image_height,image_width):
         self.login = login
         self.password = password
         self.fullname = fullname
@@ -26,7 +28,9 @@ class UserModel(db.Model):
         self.telephone = telephone
         self.description = description
         self.gender = gender
-        self.profile_photo = profile_photo
+        self.image_id = image_id
+        self.image_height = image_height
+        self.image_width = image_width
 
 
     @classmethod
@@ -51,7 +55,9 @@ class UserModel(db.Model):
                 'fullname': self.fullname,\
                 'email': self.email, \
                 'description': self.description,\
-                'profile_photo' : self.profile_photo,\
+                'image_id' : self.image_id,\
+                'image_height' : self.image_height,\
+                'image_width' : self.image_width,\
                 'gender' : self.gender,\
                 'telephone' : self.telephone
                 }
