@@ -15,7 +15,9 @@ class UserRegister(Resource):
     parser.add_argument('telephone', type=str, required=False, help="Optional")
     parser.add_argument('description',type=str,required=False,help="Optional")
     parser.add_argument('gender',type=str,required=False,help="Optional")
-    parser.add_argument('profile_photo',type=str,required=False,help="Optional")
+    parser.add_argument('image_id',type=str,required=False,help="Optional")
+    parser.add_argument('image_height',type=int,required=False,help="Optional")
+    parser.add_argument('image_width',type=int,required=False,help="Optional")
 
     def post(self):
         data = UserRegister.parser.parse_args()
@@ -29,7 +31,9 @@ class UserRegister(Resource):
                         data['telephone'],\
                         data['description'],\
                         data['gender'],\
-                        data['profile_photo'])
+                        data['image_id'],\
+                        data['image_height'],\
+                        data['image_width'])
         user.save_to_db()
         user.send_conf_email()
         return {"message": "User created successfully. Activation link sent to email provided"}, 201
@@ -44,7 +48,9 @@ class UserProfile(Resource):
     parser.add_argument('telephone', type=str, required=False, help="Optional")
     parser.add_argument('description',type=str,required=False,help="Optional")
     parser.add_argument('gender',type=str,required=False,help="Optional")
-    parser.add_argument('profile_photo',type=str,required=False,help="Optional")
+    parser.add_argument('image_id',type=str,required=False,help="Optional")
+    parser.add_argument('image_height',type=int,required=False,help="Optional")
+    parser.add_argument('image_width',type=int,required=False,help="Optional")
 
     @jwt_required
     def get(self):
