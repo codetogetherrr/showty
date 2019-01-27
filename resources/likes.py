@@ -26,7 +26,7 @@ class Likes(Resource):
     @jwt_required
     def delete(self,post_id):
         user_login = get_jwt_identity()
-        like_delete=LikesModel.find_by_post_id(post_id)
+        like_delete=LikesModel.find_by_user_id(user_login, post_id)
         
         if like_delete.user_id == get_jwt_identity():
             like_delete.delete_from_db()
