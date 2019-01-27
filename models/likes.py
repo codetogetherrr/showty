@@ -26,7 +26,7 @@ class LikesModel(db.Model):
         return all_likes   
 
     def json(self):
-        return {'post_id' : self.post_id, \
+        return {'post_id' : self.post_id,
                 'user_id' : self.user_id}
 
     def save_to_db(self):
