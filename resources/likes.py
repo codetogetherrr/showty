@@ -24,7 +24,7 @@ class Likes(Resource):
         return {"message": "Like added successfully."}, 201
 
     @jwt_required
-    def delete(self,post_id):
+    def delete(self):
         data = Likes.parser.parse_args()
         
         user_login = get_jwt_identity()
