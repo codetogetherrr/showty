@@ -30,9 +30,9 @@ class Likes(Resource):
         user_login = get_jwt_identity()
         like_delete=LikesModel.find_by_user_id(user_login, data['post_id'])
         
-        like_delete.delete_from_db()
-        return {'message': 'Like deleted'}, 200
-        
+        if like_delete.user_id == get_jwt_identity():
+            like_delete.delete_from_db()
+            return {'message': 'Like deleted'}, 200
         
 class Likes_All(Resource):
  
