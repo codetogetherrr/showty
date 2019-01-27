@@ -23,7 +23,17 @@ class Likes(Resource):
         likes_data.save_to_db()
         return {"message": "Like added successfully."}, 201
 
-
+    @jwt_required
+    def delete(self,post_id):
+        like_delete=PostModel.find_by_post_id(post_id)
+        user_login = get_jwt_identity()
+        if post_delete.login == get_jwt_identity():
+            post_delete.delete_from_db()
+            return {'message': 'Like deleted'}, 200
+        else:
+            return {'message':'blabla'}, 404
+        
+        
         
 class Likes_All(Resource):
  
