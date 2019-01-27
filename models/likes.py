@@ -9,16 +9,16 @@ class LikesModel(db.Model):
     likes_id = db.Column(db.Integer,primary_key=True)
     post_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
-    status = db.Column(db.Integer)
+    
  
-    def __init__(self, post_id, user_id, status):
+    def __init__(self, post_id, user_id):
         self.post_id = post_id
         self.user_id = user_id
-        self.status = status
+        
 
     @classmethod
     def find_by_post_id(cls, post_id):
-        all_likes= cls.query.filter_by(post_id=post_id, status=1)
+        all_likes= cls.query.filter_by(post_id=post_id)
         return all_likes
 
     @classmethod
@@ -28,9 +28,7 @@ class LikesModel(db.Model):
     
     def json(self):
         return {'post_id' : self.post_id, \
-                'user_id' : self.user_id,\
-                'status': self.status
-                }
+                'user_id' : self.user_id}
 
     def save_to_db(self):
         db.session.add(self)
