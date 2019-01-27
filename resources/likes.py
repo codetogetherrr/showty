@@ -16,8 +16,8 @@ class Likes(Resource):
     def post(self):
         data = Likes.parser.parse_args()
         user_login = get_jwt_identity()
-        user_id=UserModel.find_by_username(user_login).id
-
+        user_id=UserModel.find_by_username(user_login).login
+        
         likes_data=LikesModel(data['post_id'],\
                         user_id,)
         likes_data.save_to_db()
