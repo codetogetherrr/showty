@@ -15,22 +15,16 @@ class LikesModel(db.Model):
         self.post_id = post_id
         self.user_id = user_id
         
-
-    @classmethod
-    def find_by(cls, post_id, user_login):
-        all_likes= cls.query.filter_by(post_id=post_id, user_id = user_login)
-        return all_likes
-
     @classmethod
     def find_by_post_id(cls, post_id):
         all_likes= cls.query.filter_by(post_id=post_id)
         return all_likes
     
     @classmethod
-    def count_likes_post_id(cls, post_id):
-        count_likes = cls.query.filter_by(post_id=post_id)
-        return count_likes
-    
+    def find_by_user_id(cls, user_id):
+        all_likes= cls.query.filter_by(user_id=user_id)
+        return all_likes   
+
     def json(self):
         return {'post_id' : self.post_id, \
                 'user_id' : self.user_id}
