@@ -8,7 +8,7 @@ class LikesModel(db.Model):
 
     likes_id = db.Column(db.Integer,primary_key=True)
     post_id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer)
+    user_id = db.Column(db.String(80))
     
  
     def __init__(self, post_id, user_id):
