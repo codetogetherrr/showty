@@ -21,8 +21,8 @@ class LikesModel(db.Model):
         return all_likes
     
     @classmethod
-    def find_by_user_id(cls, user_id):
-        all_likes= cls.query.filter_by(user_id=user_id)
+    def find_by_user_id(cls, user_id, post_id):
+        all_likes= cls.query.filter_by(user_id=user_id, post_id)
         return all_likes   
 
     def json(self):
