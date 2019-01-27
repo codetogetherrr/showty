@@ -10,7 +10,7 @@ from sqlalchemy.sql import func
 class Likes(Resource):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('post_id', type=int, required=False, help="This field cannot be left blank!")
+    parser.add_argument('post_id', type=int, required=True, help="This field cannot be left blank!")
     
     @jwt_required
     def post(self):
