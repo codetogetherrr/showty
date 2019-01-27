@@ -10,7 +10,6 @@ from sqlalchemy.sql import func
 class Likes(Resource):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('status', type=int, required=False, help="This field cannot be left blank!")
     parser.add_argument('post_id', type=int, required=False, help="This field cannot be left blank!")
     
     @jwt_required
@@ -20,8 +19,7 @@ class Likes(Resource):
         user_id=UserModel.find_by_username(user_login).id
 
         likes_data=LikesModel(data['post_id'],\
-                        user_id,\
-                        data['status'])
+                        user_id,)
         likes_data.save_to_db()
         return {"message": "Like added successfully."}, 201
 
