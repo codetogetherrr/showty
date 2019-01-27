@@ -22,6 +22,11 @@ class LikesModel(db.Model):
         return all_likes
 
     @classmethod
+    def find_by_post_id(cls, post_id):
+        all_likes= cls.query.filter_by(post_id=post_id)
+        return all_likes
+    
+    @classmethod
     def count_likes_post_id(cls, post_id):
         count_likes = cls.query.filter_by(post_id=post_id)
         return count_likes
