@@ -25,10 +25,11 @@ class Likes(Resource):
 
     @jwt_required
     def delete(self,post_id):
-        like_delete=LikesModel.find_by_post_id(post_id)
         user_login = get_jwt_identity()
-        if post_delete.login == get_jwt_identity():
-            post_delete.delete_from_db()
+        like_delete=LikesModel.find_by(post_id, user_login)
+        
+        if like_delete.login == get_jwt_identity():
+            like_delete.delete_from_db()
             return {'message': 'Like deleted'}, 200
         else:
             return {'message':'blabla'}, 404
