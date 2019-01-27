@@ -45,7 +45,7 @@ class Likes_All(Resource):
     def post(self):
         data = Likes_All.parser.parse_args() 
         #likes_count = LikesModel.count_likes_post_id(data['post_id']).sum(status)
-        return {'all_likes_post_id': [x.json() for x in LikesModel.find_by_post_id(data['post_id'])]}
+        return {'all_likes_post_id': [x.json() for x in LikesModel.find_by(data['post_id'])]}
     
         #comments = CommentsModel.find_by_post_id(data['post_id'])
         #return comments.json()
