@@ -22,7 +22,7 @@ class LikesModel(db.Model):
     
     @classmethod
     def find_by_user_id(cls, user_id, post_id):
-        all_likes= cls.query.filter_by(user_id=user_id, post_id=post_id)
+        all_likes= cls.query.filter_by(user_id=user_id, post_id=post_id).first()
         return all_likes   
 
     def json(self):
