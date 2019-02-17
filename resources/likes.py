@@ -18,21 +18,17 @@ class Likes(Resource):
         user_login = get_jwt_identity()
         user_id=UserModel.find_by_username(user_login).login
         
-        likes_data=LikesModel(data['post_id'],\
-                        user_id,)
-        likes_data.save_to_db()
-        return {"message": "Like added successfully."}, 201
-
-    @jwt_required
-    def delete(self):
-        data = Likes.parser.parse_args()
+        like=LikesModel(data['post_id'], user_id,)
+        already_like=LikesModel.find_by_user_id(user_id, data['post_id'])
         
-        user_login = get_jwt_identity()
-        like_delete=LikesModel.find_by_user_id(user_login, data['post_id'])
-        
-        if like_delete.user_id == get_jwt_identity():
+        if like == already_like:
             like_delete.delete_from_db()
             return {'message': 'Like deleted'}, 200
+        else:
+            like.save_to_db()
+            return {"message": "Like added successfully."}, 201
+
+
         
 class Likes_All(Resource):
  
