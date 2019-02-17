@@ -22,7 +22,7 @@ class Likes(Resource):
         already_like=LikesModel.find_by_user_id(user_id, data['post_id'])
         
         if like.user_id == already_like.user_id and like.post_id == already_like.post_id:
-            like_delete.delete_from_db()
+            already_like.delete_from_db()
             return {'message': 'Like deleted'}, 200
         else:
             like.save_to_db()
