@@ -28,6 +28,10 @@ class LikesModel(db.Model):
     def json(self):
         return {'post_id' : self.post_id,
                 'user_id' : self.user_id}
+    
+    def json_user_id(self):
+        return {'user_id' : self.user_id}
+    
 
     def save_to_db(self):
         db.session.add(self)
