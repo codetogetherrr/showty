@@ -23,10 +23,10 @@ class Likes(Resource):
         
         if like.user_id == already_like.user_id and like.post_id == already_like.post_id:
             already_like.delete_from_db()
-            return {'message': 'Like deleted'}, 200
+            return {'message': 'unliked'}, 200
         else:
             like.save_to_db()
-            return {"message": "Like added successfully."}, 201
+            return {"message": "liked"}, 201
 
 
         
