@@ -38,11 +38,10 @@ def facebooklogin():
     facebook_access_token = request.json.get('facebook_access_token', None)
     response = requests.get('https://graph.facebook.com/me?fields=id&access_token=' + facebook_access_token)
     data = response.json()
-    print(data['id'])
     ret = {'facebook_profile_id':data['id']}
     return jsonify(ret), 200
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods = ['POST'])
 def login():
     login = request.json.get('login', None)
     password = request.json.get('password', None)
