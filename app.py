@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from flask_restful import Api
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,jwt_refresh_token_required, create_refresh_token, get_jwt_identity)
 from datetime import timedelta
-
+from flask import requests
 from werkzeug.security import check_password_hash
 from resources.user import UserRegister, UserProfile, UserConfirm
 from models.user import UserModel
