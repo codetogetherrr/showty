@@ -17,7 +17,7 @@ class UserFacebookRegisterLogin(Resource):
         facebook_access_token = data['facebook_access_token']
         response = requests.get('https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token)
         print(response.text)
-        data = json.loads(response.text)
+        data = json.loads(str(response.text))
         ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
         return jsonify(ret), 200
 
