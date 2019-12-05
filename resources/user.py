@@ -16,8 +16,8 @@ class UserFacebookRegisterLogin(Resource):
         facebook_access_token = data['facebook_access_token']
         response = requests.get('https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token)
 
-        response.encoding = 'ISO-8859-1'
-        print(response.encoding)
+
+        print(response.headers['Content-Type'])
 
         data = response.json()
         ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
