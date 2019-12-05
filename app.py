@@ -6,7 +6,7 @@ from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,jw
 from datetime import timedelta
 import requests
 from werkzeug.security import check_password_hash
-from resources.user import UserRegister, UserProfile, UserConfirm
+from resources.user import UserRegister, UserFacebookRegisterLogin, UserProfile, UserConfirm
 from models.user import UserModel
 from resources.user import UsersList
 from resources.post import Posts, AllPostsUser
