@@ -14,10 +14,10 @@ class UserFacebookRegisterLogin(Resource):
     def post(self):
         data = UserFacebookRegisterLogin.parser.parse_args()
         facebook_access_token = data['facebook_access_token']
-        response = requests.get('https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token)
 
+        url = 'https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token
 
-        print(response.headers['Content-Type'])
+        response = requests.get(url, headers = {"Content-Type'": "application/json"})
 
         data = response.json()
         ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
