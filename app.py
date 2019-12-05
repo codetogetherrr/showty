@@ -6,7 +6,8 @@ from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,jw
 from datetime import timedelta
 import requests
 from werkzeug.security import check_password_hash
-from resources.user import UserRegister, UserFacebookRegisterLogin, UserProfile, UserConfirm
+from resources.user import UserRegister, UserProfile, UserConfirm
+# from resources.user import UserFacebookRegisterLogin
 from models.user import UserModel
 from resources.user import UsersList
 from resources.post import Posts, AllPostsUser
@@ -33,13 +34,13 @@ def my_expired_token_callback():
 
 #API Endpoint Login
 
-#@app.route('/facebooklogin', methods=['POST'])
-#def facebooklogin():
-    #facebook_access_token = request.json.get('facebook_access_token', None)
-    #response = requests.get('https://graph.facebook.com/me?fields=id&access_token=' + facebook_access_token)
-    #data = response.json()
-    #ret = {'facebook_profile_id':data['id']}
-    #return jsonify(ret), 200
+@app.route('/facebooklogin', methods=['POST'])
+def facebooklogin():
+    facebook_access_token = request.json.get('facebook_access_token', None)
+    response = requests.get('https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token)
+    data = response.json()
+    ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
+    return jsonify(ret), 200
 
 @app.route('/login', methods = ['POST'])
 def login():
