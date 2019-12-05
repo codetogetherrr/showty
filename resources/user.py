@@ -15,10 +15,10 @@ class UserFacebookRegisterLogin(Resource):
     def post(self):
         data = UserFacebookRegisterLogin.parser.parse_args()
         facebook_access_token = data['facebook_access_token']
-        response = requests.get('https://graph.facebook.com/me?fields=id,name,email&access_token=' + facebook_access_token)
+        response = requests.get('https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token)
         print(response.text)
         data = response.json()
-        ret = {'facebook_profile_id':data['id'], 'facebook_name':data['name'], 'facebook_email':data['email']  }
+        ret = {'facebook_profile_id':data['id'], 'facebook_email':data['email']  }
         return jsonify(ret), 200
 
 #Resource Register
