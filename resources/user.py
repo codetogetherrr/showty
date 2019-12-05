@@ -1,25 +1,25 @@
 from flask_restful import Resource, reqparse
 from models.user import UserModel
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask import jsonify, json, make_response, render_template, redirect
+from flask import jsonify, make_response, render_template, redirect
 from werkzeug.security import generate_password_hash
 import requests
 
 #Resource Register/Login Facebook
-# class UserFacebookRegisterLogin(Resource):
-#
-#     parser = reqparse.RequestParser()
-#     parser.add_argument('facebook_access_token', type=str, required=True, help="This field cannot be left blank!")
-#
-#
-#     def post(self):
-#         data = UserFacebookRegisterLogin.parser.parse_args()
-#         facebook_access_token = data['facebook_access_token']
-#         response = requests.get('https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token)
-#         print(response.text)
-#         data = json.loads(str(response.text))
-#         ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
-#         return jsonify(ret), 200
+class UserFacebookRegisterLogin(Resource):
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('facebook_access_token', type=str, required=True, help="This field cannot be left blank!")
+
+
+    def post(self):
+        data = UserFacebookRegisterLogin.parser.parse_args()
+        facebook_access_token = data['facebook_access_token']
+        response = requests.get('https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token)
+        print(response.text)
+        data = response.json()
+        ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
+        return jsonify(ret), 200
 
 #Resource Register
 class UserRegister(Resource):
