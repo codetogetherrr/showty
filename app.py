@@ -73,7 +73,7 @@ def protected():
 
 #Oher API Endpoints required Resources
 api.add_resource(UserRegister, '/register')
-api.add_resource(UserFacebookRegisterLogin, '/facebooklogin')
+# api.add_resource(UserFacebookRegisterLogin, '/facebooklogin')
 api.add_resource(UserConfirm, '/userconfirm/<int:user_id>')
 api.add_resource(UserProfile, '/users/')
 api.add_resource(UsersList, '/userslist')
