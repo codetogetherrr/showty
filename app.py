@@ -33,13 +33,13 @@ def my_expired_token_callback():
 
 #API Endpoint Login
 
-@app.route('/facebooklogin', methods=['POST'])
-def facebooklogin():
-    facebook_access_token = request.json.get('facebook_access_token', None)
-    response = requests.get('https://graph.facebook.com/me?fields=id&access_token=' + facebook_access_token)
-    data = response.json()
-    ret = {'facebook_profile_id':data['id']}
-    return jsonify(ret), 200
+#@app.route('/facebooklogin', methods=['POST'])
+#def facebooklogin():
+    #facebook_access_token = request.json.get('facebook_access_token', None)
+    #response = requests.get('https://graph.facebook.com/me?fields=id&access_token=' + facebook_access_token)
+    #data = response.json()
+    #ret = {'facebook_profile_id':data['id']}
+    #return jsonify(ret), 200
 
 @app.route('/login', methods = ['POST'])
 def login():
@@ -72,6 +72,7 @@ def protected():
 
 #Oher API Endpoints required Resources
 api.add_resource(UserRegister, '/register')
+api.add_resource(UserFacebookRegisterLogin, '/facebooklogin')
 api.add_resource(UserConfirm, '/userconfirm/<int:user_id>')
 api.add_resource(UserProfile, '/users/')
 api.add_resource(UsersList, '/userslist')
@@ -84,7 +85,6 @@ api.add_resource(Comments_All, '/comments_all')
 api.add_resource(Likes, '/like')
 api.add_resource(Likes_All, '/likes_all')
 
-#blablabla
 if __name__ == '__main__':
     from db import db
     db.init_app(app)
