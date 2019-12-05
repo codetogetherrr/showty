@@ -11,12 +11,12 @@ class UserFacebookRegisterLogin(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('facebook_access_token', type=str, required=True, help="This field cannot be left blank!")
 
-
     def post(self):
         data = UserFacebookRegisterLogin.parser.parse_args()
         facebook_access_token = data['facebook_access_token']
         response = requests.get('https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token)
-        print(response.text)
+        print(response.encoding)
+
         data = response.json()
         ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
         return jsonify(ret), 200
