@@ -13,14 +13,12 @@ class UserFacebookRegisterLogin(Resource):
 
     def post(self):
         data = UserFacebookRegisterLogin.parser.parse_args()
-        #facebook_access_token = request.json.get('facebook_access_token', None)
         facebook_access_token = data['facebook_access_token']
-
-        url = 'https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token
-
+        url = 'https://graph.facebook.com/me?fields=id,name,email&access_token=' + facebook_access_token
         response = requests.get(url, headers={'Content-Type': 'application/json'})
         data = response.json()
         if UserModel.find_by_username(data['id']):
+            
             return {"message": "User with that login already exists."}, 400
         #data = response.json()
         #ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
