@@ -20,9 +20,10 @@ class UserFacebookRegisterLogin(Resource):
 
         response = requests.get(url, headers={'Content-Type': 'application/json'})
 
-        data = response.json()
-        ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
-        return jsonify(ret), 200
+        #data = response.json()
+        #ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
+        #return jsonify(ret), 200
+        return response.json(), 200
 
 #Resource Register
 class UserRegister(Resource):
