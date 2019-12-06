@@ -19,7 +19,8 @@ class UserFacebookRegisterLogin(Resource):
         data = response.json()
         login, rest = data['email'].split('@')
         if UserModel.find_by_username(login):
-            return {"message": "User with that login already exists."}, 400
+            #return {"message": "User with that login already exists."}, 400
+            return jsonify({"login": login}), 200
         #data = response.json()
         #ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
         #return jsonify(ret), 200
