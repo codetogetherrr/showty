@@ -19,11 +19,13 @@ class UserFacebookRegisterLogin(Resource):
         url = 'https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token
 
         response = requests.get(url, headers={'Content-Type': 'application/json'})
-
+        data = response.json()
+        if UserModel.find_by_username(data['id']):
+            return {"message": "User with that login already exists."}, 400
         #data = response.json()
         #ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
         #return jsonify(ret), 200
-        return response.json(), 200
+        return data, 200
 
 #Resource Register
 class UserRegister(Resource):
