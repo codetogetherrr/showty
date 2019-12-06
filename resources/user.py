@@ -8,13 +8,13 @@ import requests
 #Resource Register/Login Facebook
 class UserFacebookRegisterLogin(Resource):
 
-     parser = reqparse.RequestParser()
-     parser.add_argument('facebook_access_token', type=str, required=True, help="This field cannot be left blank!")
+    parser = reqparse.RequestParser()
+    parser.add_argument('facebook_access_token', type=str, required=True, help="This field cannot be left blank!")
 
     def post(self):
-         data = UserFacebookRegisterLogin.parser.parse_args()
+        data = UserFacebookRegisterLogin.parser.parse_args()
         #facebook_access_token = request.json.get('facebook_access_token', None)
-         facebook_access_token = data['facebook_access_token']
+        facebook_access_token = data['facebook_access_token']
 
         url = 'https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token
 
