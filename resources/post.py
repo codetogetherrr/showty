@@ -36,9 +36,9 @@ class Posts(Resource):
         current_time=func.now()
 
         post=PostModel(data['image_id'],\
-                        user_login,\
-                        data['image_height'],\
                         data['image_width'],\
+                        data['image_height'],\
+                        user_login,\
                         data['description'],\
                         current_time
                       )
