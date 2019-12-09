@@ -33,15 +33,6 @@ def my_expired_token_callback():
     return jsonify({'message': 'The token has expired'}), 401
 
 #API Endpoint Login
-
-# @app.route('/facebooklogin', methods=['POST'])
-# def facebooklogin():
-#     facebook_access_token = request.json.get('facebook_access_token', None)
-#     response = requests.get('https://graph.facebook.com/me?fields=id,name&access_token=' + facebook_access_token)
-#     data = response.json()
-#     ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
-#     return jsonify(ret), 200
-
 @app.route('/login', methods = ['POST'])
 def login():
     login = request.json.get('login', None)
