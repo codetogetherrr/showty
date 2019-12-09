@@ -19,11 +19,10 @@ class UserFacebookRegisterLogin(Resource):
         data = response.json()
         login, rest = data['email'].split('@')
         if UserModel.find_by_username(login):
-            #return {"message": "User with that login already exists."}, 400
-            return {'login': login}, 200
-        #data = response.json()
-        #ret = {'facebook_profile_id':data['id'], 'facebook_email':data['name']}
-        #return jsonify(ret), 200
+            return {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)),
+                'refresh_token': create_refresh_token(identity=login)}, 200
+        user=UserModel(login, data['name'], data['email'])
+
         return data, 200
 
 #Resource Register
