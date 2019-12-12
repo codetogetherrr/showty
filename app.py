@@ -40,7 +40,7 @@ def check_if_token_in_blacklist(decrypted_token):
 def logout1():
     jti = get_raw_jwt()['jti']
     blacklist.add(jti)
-    return jsonify({"message": "1st step off logging out successfull"}), 200
+    return jsonify({"message": "1st step of logging out successful"}), 200
 
 @app.route('/logout2', methods=['DELETE'])
 @jwt_refresh_token_required
