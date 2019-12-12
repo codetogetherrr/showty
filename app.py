@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, request, jsonify
 from flask_restful import Api
-from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,jwt_refresh_token_required, create_refresh_token, get_jwt_identity)
+from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,jwt_refresh_token_required, create_refresh_token, get_jwt_identity, get_raw_jwt)
 from datetime import timedelta
 import requests
 from werkzeug.security import check_password_hash
@@ -23,9 +23,31 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:/
 app.config['SQLAlchemy_Track_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.secret_key = os.environ.get('JWT_SECRET_KEY', '')
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 api = Api(app)
 
 jwt = JWTManager(app)
+blacklist = set()
+
+@jwt.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    jti = decrypted_token['jti']
+    return jti in blacklist
+
+@app.route('/logout1', methods=['DELETE'])
+@jwt_required
+def logout1():
+    jti = get_raw_jwt()['jti']
+    blacklist.add(jti)
+    return jsonify({"message": "1st step off logging out successfull"}), 200
+
+@app.route('/logout2', methods=['DELETE'])
+@jwt_refresh_token_required
+def logout2():
+    jti = get_raw_jwt()['jti']
+    blacklist.add(jti)
+    return jsonify({"message": "Successfully logged out"}), 200
 
 
 @jwt.expired_token_loader
