@@ -17,21 +17,40 @@ class UserFacebookRegisterLogin(Resource):
         headers = {'Content-Type': 'application/json'}
         payload = {'fields': 'email, name', 'access_token': facebook_access_token}
         url = 'https://graph.facebook.com/me'
-        response = requests.get(url, headers=headers, params=payload)
-        data = response.json()
-        if response.status_code == 200:
-            data = response.json()
-            if UserModel.find_by_username(data['email']):
-                return data, 200
-                #return {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)),
-                #'refresh_token': create_refresh_token(identity=login)}, 200
-            return {'message' : 'user does not exis yet'}, 200
-        elif response.status_code == 400:
-            data = response.json()
-            if data['error']['code'] == 190:
-                return {'message': data['error']['message']}, 401
-
-        return data, 200
+        profileDataResponse = requests.get(url, headers=headers, params=payload)
+        if profileDataResponse.status_code == 200:
+            profileData = profileDataResponse.json()
+            headers = {'Content-Type': 'application/json'}
+            payload = {'redirect': 'false', 'height': 320, 'width': 320,'access_token': facebook_access_token}
+            url = 'https://graph.facebook.com/me/picture'
+            profilePicResponse = requests.get(url, headers=headers, params=payload)
+            
+                if profilePicResponse.status_code == 200:
+                    profilePicData = profilePicResponse.json()
+                    profilePicUrl = profilePicData['data']['url']
+                    
+                    #cloudinary unsigned upload
+                    #if email exists merge data and response with tokens
+                    #if not create user and response with tokens
+                    
+                    
+                
+                elif profilePicResponse.status_code == 400:
+                    
+                    errorData = profilePicResponse.json()
+                    if errorData['error']['code'] == 190:
+                        return {'message': errorData['error']['message']}, 401
+                else:
+                    responseData = profilePicResponse.json()
+                    return responseData, profilePicResponse.status_code
+                    
+        elif profileDataResponse.status_code == 400:
+            errorData = profileDataResponse.json()
+            if errorData['error']['code'] == 190:
+                return {'message': errorData['error']['message']}, 401
+        else:
+            responseData = profileDataResponse.json()
+            return responseData, profileDataResponse.status_code
 
 #Resource Register
 class UserRegister(Resource):
