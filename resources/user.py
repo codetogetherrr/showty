@@ -14,14 +14,17 @@ class UserFacebookRegisterLogin(Resource):
     def post(self):
         data = UserFacebookRegisterLogin.parser.parse_args()
         facebook_access_token = data['facebook_access_token']
-        url = 'https://graph.facebook.com/me?fields=id,name,email&access_token=' + facebook_access_token
-        response = requests.get(url, headers={'Content-Type': 'application/json'})
+        headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer' + facebook_access_token}
+        payload = {'fields': 'email, name'}
+        url = 'https://graph.facebook.com/me
+        response = requests.get(url, headers=headers, params=payload)
         if response.status_code == 200:
             data = response.json()
             if UserModel.find_by_username(data['email']):
-                return {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)),
-                'refresh_token': create_refresh_token(identity=login)}, 200
-        
+                return data, 200
+                #return {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)),
+                #'refresh_token': create_refresh_token(identity=login)}, 200
+            return {'message' : 'user does not exis yet'}, 200
         elif response.status_code == 400:
             data = response.json()
             if data['error']['code'] == 190:
