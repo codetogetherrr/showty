@@ -18,6 +18,7 @@ class UserFacebookRegisterLogin(Resource):
         payload = {'fields': 'email, name'}
         url = 'https://graph.facebook.com/me'
         response = requests.get(url, headers=headers, params=payload)
+        data = response.json()
         if response.status_code == 200:
             data = response.json()
             if UserModel.find_by_username(data['email']):
@@ -30,7 +31,7 @@ class UserFacebookRegisterLogin(Resource):
             if data['error']['code'] == 190:
                 return {'message': data['error']['message']}, 401
 
-        return {'message':'default'}, 200
+        return data, 200
 
 #Resource Register
 class UserRegister(Resource):
