@@ -16,7 +16,7 @@ class UserFacebookRegisterLogin(Resource):
         facebook_access_token = data['facebook_access_token']
         headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer' + facebook_access_token}
         payload = {'fields': 'email, name'}
-        url = 'https://graph.facebook.com/me
+        url = 'https://graph.facebook.com/me'
         response = requests.get(url, headers=headers, params=payload)
         if response.status_code == 200:
             data = response.json()
