@@ -32,7 +32,7 @@ class UserRegister(Resource):
     parser.add_argument('login', type=str, required=True, help="This field cannot be left blank!")
     parser.add_argument('password', type=str, required=True, help="This field cannot be left blank!")
     parser.add_argument('fullname', type=str, required=False, help="Optional!")
-    parser.add_argument('email', type=str, required=False, help="Optional")
+    parser.add_argument('email', type=str, required=True, help="This field cannot be left blank!")
     parser.add_argument('telephone', type=str, required=False, help="Optional")
     parser.add_argument('description',type=str,required=False,help="Optional")
     parser.add_argument('gender',type=str,required=False,help="Optional")
@@ -44,7 +44,9 @@ class UserRegister(Resource):
         data = UserRegister.parser.parse_args()
         
         if UserModel.find_by_username(data['login']):
-            return {"message": "User with that login already exists."}, 400
+            return {"message": "User with that login already exists."}, 200
+        if UserModel.find_by_email(data['email']):
+            return {"message": "Email is already in use."}, 200
         user=UserModel(data['login'],\
                         generate_password_hash(data['password']),\
                         data['fullname'],\
