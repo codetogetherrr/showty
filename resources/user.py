@@ -25,9 +25,9 @@ class UserFacebookRegisterLogin(Resource):
             url = 'https://graph.facebook.com/me/picture'
             profilePicResponse = requests.get(url, headers=headers, params=payload)
             
-                if profilePicResponse.status_code == 200:
-                    profilePicData = profilePicResponse.json()
-                    profilePicUrl = profilePicData['data']['url']
+            if profilePicResponse.status_code == 200:
+                profilePicData = profilePicResponse.json()
+                profilePicUrl = profilePicData['data']['url']
                     
                     #cloudinary unsigned upload
                     #if email exists merge data and response with tokens
@@ -35,14 +35,14 @@ class UserFacebookRegisterLogin(Resource):
                     
                     
                 
-                elif profilePicResponse.status_code == 400:
+            elif profilePicResponse.status_code == 400:
                     
-                    errorData = profilePicResponse.json()
-                    if errorData['error']['code'] == 190:
+                errorData = profilePicResponse.json()
+                if errorData['error']['code'] == 190:
                         return {'message': errorData['error']['message']}, 401
-                else:
-                    responseData = profilePicResponse.json()
-                    return responseData, profilePicResponse.status_code
+            else:
+                responseData = profilePicResponse.json()
+                return responseData, profilePicResponse.status_code
                     
         elif profileDataResponse.status_code == 400:
             errorData = profileDataResponse.json()
