@@ -16,14 +16,18 @@ class UserFacebookRegisterLogin(Resource):
         facebook_access_token = data['facebook_access_token']
         url = 'https://graph.facebook.com/me?fields=id,name,email&access_token=' + facebook_access_token
         response = requests.get(url, headers={'Content-Type': 'application/json'})
-        data = response.json()
-        login, rest = data['email'].split('@')
-        if UserModel.find_by_username(login):
+        if response.status_code == 200:
+            data = response.json()
+            if UserModel.find_by_username(data['email']):
             return {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)),
                 'refresh_token': create_refresh_token(identity=login)}, 200
-        user=UserModel(login, data['name'], data['email'])
+        
+        elif response.status_code == 400:
+            data = response.json()
+            if data['error']['code'] == 190:
+                return {'message': data['error']['message']}, 401
 
-        return data, 200
+        return {'message':'default'}, 200
 
 #Resource Register
 class UserRegister(Resource):
