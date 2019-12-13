@@ -14,8 +14,8 @@ class UserFacebookRegisterLogin(Resource):
     def post(self):
         data = UserFacebookRegisterLogin.parser.parse_args()
         facebook_access_token = data['facebook_access_token']
-        headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer' + facebook_access_token}
-        payload = {'fields': 'email, name'}
+        headers = {'Content-Type': 'application/json'}
+        payload = {'fields': 'email, name', 'access_token': facebook_access_token}
         url = 'https://graph.facebook.com/me'
         response = requests.get(url, headers=headers, params=payload)
         data = response.json()
