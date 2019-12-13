@@ -19,7 +19,7 @@ class UserFacebookRegisterLogin(Resource):
         if response.status_code == 200:
             data = response.json()
             if UserModel.find_by_username(data['email']):
-            return {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)),
+                return {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)),
                 'refresh_token': create_refresh_token(identity=login)}, 200
         
         elif response.status_code == 400:
