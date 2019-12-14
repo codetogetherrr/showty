@@ -33,25 +33,17 @@ class UserFacebookRegisterLogin(Resource):
                 payload = {'upload_preset': upload_preset, 'file' : profilePicUrl}
                 url = 'https://api.cloudinary.com/v1_1/' + cloud_name + '/image/upload'
                 cloudinaryPicUploadResponse = requests.post(url, headers=headers, data=payload)
+
                 if cloudinaryPicUploadResponse.status_code == 200:
                     if UserModel.find_by_email(profileData['email']):
-                        
-                        #merge data -> response tokens
-                    else:
-                        #return data to be presented and login picked
 
+                        print('default')
 
                 else:
                     errorData = cloudinaryPicUploadResponse.json()
                     return errorData, cloudinaryPicUploadResponse.status_code
 
 
-
-
-
-                    
-                    
-                
             elif profilePicResponse.status_code == 400:
                     
                 errorData = profilePicResponse.json()
