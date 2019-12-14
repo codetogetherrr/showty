@@ -48,7 +48,7 @@ class UserFacebookRegisterLogin(Resource):
                     
                 errorData = profilePicResponse.json()
                 if errorData['error']['code'] == 190:
-                        return {'message': errorData['error']['message']}, 401
+                    return {'message': errorData['error']['message']}, 401
             else:
                 responseData = profilePicResponse.json()
                 return responseData, profilePicResponse.status_code
