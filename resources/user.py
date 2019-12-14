@@ -1,9 +1,10 @@
 from flask_restful import Resource, reqparse
 from models.user import UserModel
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask import jsonify, request, make_response, render_template, redirect
+from flask import make_response, render_template
 from werkzeug.security import generate_password_hash
 import requests
+import os
 
 #Resource Register/Login Facebook
 class UserFacebookRegisterLogin(Resource):
@@ -20,7 +21,6 @@ class UserFacebookRegisterLogin(Resource):
         profileDataResponse = requests.get(url, headers=headers, params=payload)
         if profileDataResponse.status_code == 200:
             profileData = profileDataResponse.json()
-            headers = {'Content-Type': 'application/json'}
             payload = {'redirect': 'false', 'height': 320, 'width': 320,'access_token': facebook_access_token}
             url = 'https://graph.facebook.com/me/picture'
             profilePicResponse = requests.get(url, headers=headers, params=payload)
@@ -28,10 +28,27 @@ class UserFacebookRegisterLogin(Resource):
             if profilePicResponse.status_code == 200:
                 profilePicData = profilePicResponse.json()
                 profilePicUrl = profilePicData['data']['url']
-                    
-                    #cloudinary unsigned upload
-                    #if email exists merge data and response with tokens
-                    #if not create user and response with tokens
+                upload_preset = os.environ.get('CLOUDINARY_UPLOAD_PRESET', '')
+                cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
+                payload = {'upload_preset': upload_preset, 'file' : profilePicUrl}
+                url = 'https://api.cloudinary.com/v1_1/' + cloud_name + '/image/upload'
+                cloudinaryPicUploadResponse = requests.post(url, headers=headers, data=payload)
+                if cloudinaryPicUploadResponse.status_code == 200:
+                    if UserModel.find_by_email(profileData['email']):
+                        
+                        #merge data -> response tokens
+                    else:
+                        #return data to be presented and login picked
+
+
+                else:
+                    errorData = cloudinaryPicUploadResponse.json()
+                    return errorData, cloudinaryPicUploadResponse.status_code
+
+
+
+
+
                     
                     
                 
