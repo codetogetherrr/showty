@@ -17,7 +17,7 @@ from resources.likes import Likes
 from resources.likes import Likes_All
 import re
 import sys
-import NumPy
+import numpy
 
 #Configurations
 app = Flask(__name__)
