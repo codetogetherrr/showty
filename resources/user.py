@@ -15,27 +15,41 @@ class UserFacebookRegisterLogin(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('facebook_access_token', type=str, required=True, help="This field cannot be left blank!")
 
-    def post(self):
-        data = UserFacebookRegisterLogin.parser.parse_args()
-        facebook_access_token = data['facebook_access_token']
+    def get_facebook_profile_data(self, facebook_access_token: str):
         headers = {'Content-Type': 'application/json'}
         payload = {'fields': 'email, name', 'access_token': facebook_access_token}
         url = 'https://graph.facebook.com/me'
         profileDataResponse = requests.get(url, headers=headers, params=payload)
+        return profileDataResponse
+
+    def get_facebook_profile_pic(self, height: int, width: int, facebook_access_token: str):
+        headers = {'Content-Type': 'application/json'}
+        payload = {'redirect': 'false', 'height': height, 'width': width, 'access_token': facebook_access_token}
+        url = 'https://graph.facebook.com/me/picture'
+        profilePicResponse = requests.get(url, headers=headers, params=payload)
+        return profilePicResponse
+
+    def upload_pic_cloudinary(self, url: str, upload_preset: str, cloud_name: str):
+        headers = {'Content-Type': 'application/json'}
+        payload = {'upload_preset': upload_preset, 'file': url}
+        url = 'https://api.cloudinary.com/v1_1/' + cloud_name + '/image/upload'
+        cloudinaryPicUploadResponse = requests.post(url, headers=headers, data=payload)
+        return cloudinaryPicUploadResponse
+
+    def post(self):
+        data = UserFacebookRegisterLogin.parser.parse_args()
+        profileDataResponse = self.get_facebook_profile_data(data['facebook_access_token'])
         if profileDataResponse.status_code == 200:
             profileData = profileDataResponse.json()
-            payload = {'redirect': 'false', 'height': 320, 'width': 320,'access_token': facebook_access_token}
-            url = 'https://graph.facebook.com/me/picture'
-            profilePicResponse = requests.get(url, headers=headers, params=payload)
+            profilePicResponse = self.get_facebook_profile_pic(320,320,data['facebook_access_token'])
             
             if profilePicResponse.status_code == 200:
                 profilePicData = profilePicResponse.json()
                 profilePicUrl = profilePicData['data']['url']
                 upload_preset = os.environ.get('CLOUDINARY_UPLOAD_PRESET', '')
                 cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
-                payload = {'upload_preset': upload_preset, 'file' : profilePicUrl}
-                url = 'https://api.cloudinary.com/v1_1/' + cloud_name + '/image/upload'
-                cloudinaryPicUploadResponse = requests.post(url, headers=headers, data=payload)
+
+                cloudinaryPicUploadResponse = self.upload_pic_cloudinary(profilePicUrl, upload_preset, cloud_name)
 
                 if cloudinaryPicUploadResponse.status_code == 200:
                     if UserModel.find_by_email(profileData['email']):
