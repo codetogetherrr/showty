@@ -15,6 +15,9 @@ from resources.comments import Comments
 from resources.comments import Comments_All
 from resources.likes import Likes
 from resources.likes import Likes_All
+import re
+import sys
+import numpy
 
 #Configurations
 app = Flask(__name__)
