@@ -5,6 +5,9 @@ from flask import make_response, render_template
 from werkzeug.security import generate_password_hash
 import requests
 import os
+import re
+
+
 
 #Resource Register/Login Facebook
 class UserFacebookRegisterLogin(Resource):
@@ -60,6 +63,22 @@ class UserFacebookRegisterLogin(Resource):
         else:
             responseData = profileDataResponse.json()
             return responseData, profileDataResponse.status_code
+
+def generateLogin(login):
+
+    logins = UserModel.list_all_logins()
+
+    if login in logins:
+
+        if re.findall('\d{1,}', login):
+            preLogin = login[:len(login) - len(str(re.findall('\d{1,}', login)[-1]))]
+            numericEndsFinal = [re.findall('\d{1,}',u) for u in logins if u[:len(u) - len(re.findall('\d{1,}',u)[-1])] == preLogin]
+            iter = min([int(a[-1]) for a in numericEndsFinal if [str(int(a[0]) + 1)] not in numericEndsFinal]) + 1
+        else:
+            preLogin = login
+            iter = 1
+
+    return preLogin + str(iter)
 
 #Resource Register
 class UserRegister(Resource):

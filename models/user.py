@@ -32,7 +32,13 @@ class UserModel(db.Model):
         self.image_height = image_height
         self.image_width = image_width
 
-
+    @classmethod
+    def list_all_logins(cls):
+        logins = []
+        users = cls.query.all()
+        for user in users:
+            logins.append(user.login)
+        return logins
     @classmethod
     def find_by_username(cls, login):
         return cls.query.filter_by(login=login).first()
