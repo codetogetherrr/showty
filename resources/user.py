@@ -39,37 +39,49 @@ class UserFacebookRegisterLogin(Resource):
     def post(self):
         data = UserFacebookRegisterLogin.parser.parse_args()
         profileDataResponse = self.get_facebook_profile_data(data['facebook_access_token'])
+        
         if profileDataResponse.status_code == 200:
             profileData = profileDataResponse.json()
-            profilePicResponse = self.get_facebook_profile_pic(320,320,data['facebook_access_token'])
-            
-            if profilePicResponse.status_code == 200:
-                profilePicData = profilePicResponse.json()
-                profilePicUrl = profilePicData['data']['url']
-                upload_preset = os.environ.get('CLOUDINARY_UPLOAD_PRESET', '')
-                cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
+            if UserModel.find_by_email(profileData['email']):
+                newData = {}
+                if UserModel.find_by_email(profileData['email']).fullname == None:
+                    newData['fullname'] = profileData['name']
+                if UserModel.find_by_email(profileData['email']).image_id == None:
+                    profilePicResponse = self.get_facebook_profile_pic(320,320,data['facebook_access_token'])
+                    if profilePicResponse.status_code == 200:
+                        profilePicData = profilePicResponse.json()
+                        profilePicUrl = profilePicData['data']['url']
+                        upload_preset = os.environ.get('CLOUDINARY_UPLOAD_PRESET', '')
+                        cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
+                        cloudinaryPicUploadResponse = self.upload_pic_cloudinary(profilePicUrl, upload_preset, cloud_name)
+                        if cloudinaryPicUploadResponse.status_code == 200:
+                            cloudinaryPicUploadData = cloudinaryPicUploadResponse.json()
+                            newData['image_id'] = cloudinaryPicUploadData['public_id']
+                            newData['image_height'] = cloudinaryPicUploadData['height']
+                            newData['image_width'] = cloudinaryPicUploadData['width']
+                        else:
+                            errorData = cloudinaryPicUploadResponse.json()
+                            return errorData, cloudinaryPicUploadResponse.status_code    
 
-                cloudinaryPicUploadResponse = self.upload_pic_cloudinary(profilePicUrl, upload_preset, cloud_name)
-
-                if cloudinaryPicUploadResponse.status_code == 200:
-                    if UserModel.find_by_email(profileData['email']):
-
-                        print('default')
-
+                    elif profilePicResponse.status_code == 400:
+                        errorData = profilePicResponse.json()
+                        if errorData['error']['code'] == 190:
+                            return {'message': errorData['error']['message']}, 401
+                    else:
+                        responseData = profilePicResponse.json()
+                        return responseData, profilePicResponse.status_code
+                    
+                if not newData:
+                    #return (tokens, mergable=false).json()
                 else:
-                    errorData = cloudinaryPicUploadResponse.json()
-                    return errorData, cloudinaryPicUploadResponse.status_code
-
-
-            elif profilePicResponse.status_code == 400:
+                    #return (newData, tokens, mergable=true).json()
                     
-                errorData = profilePicResponse.json()
-                if errorData['error']['code'] == 190:
-                    return {'message': errorData['error']['message']}, 401
             else:
-                responseData = profilePicResponse.json()
-                return responseData, profilePicResponse.status_code
-                    
+                #get_pic_url_from_graphapi()
+                #upload_pic_to_cloudinary() 
+                #add_imagedata_to_newData()
+	            #return newData.json()
+   
         elif profileDataResponse.status_code == 400:
             errorData = profileDataResponse.json()
             if errorData['error']['code'] == 190:
