@@ -74,12 +74,47 @@ class UserFacebookRegisterLogin(Resource):
                     
                 if not newData:
                     login = UserModel.find_by_email(profileData['email']).login
-                    return {'tokens': {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=login)}, 'mergable': false}
+                    return {'tokens': {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=login)}, 'mergable': false}, 200
                 else:
                     login = UserModel.find_by_email(profileData['email']).login
-                    return {'user': newData, 'tokens': {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=login)}, 'mergable': false}
+                    return {'user': newData, 'tokens': {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=login)}, 'mergable': false}, 200
                     
             else:
+                
+                profilePicResponse = self.get_facebook_profile_pic(320,320,data['facebook_access_token'])
+                if profilePicResponse.status_code == 200:
+                    profilePicData = profilePicResponse.json()
+                    profilePicUrl = profilePicData['data']['url']
+                    upload_preset = os.environ.get('CLOUDINARY_UPLOAD_PRESET', '')
+                    cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
+                    cloudinaryPicUploadResponse = self.upload_pic_cloudinary(profilePicUrl, upload_preset, cloud_name)
+                    if cloudinaryPicUploadResponse.status_code == 200:
+                        cloudinaryPicUploadData = cloudinaryPicUploadResponse.json()
+                            
+                        possibleLogin = profileData['email'].split("@")[0]
+                        fullname = profileData['name']
+                        finalLogin = self.generateLogin(possibleLogin)
+                        email = profileData['email']
+                        image_id = cloudinaryPicUploadData['public_id']
+                        image_height = cloudinaryPicUploadData['height']
+                        image_width = cloudinaryPicUploadData['width']
+                        
+                        user=UserModel(finalLogin, "", fullname, email, "", "", "", image_id, image_height, image_width, True)
+                        user.save_to_db()
+                        
+                        return {'tokens':{'access_token': create_access_token(identity=finalLogin,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=finalLogin)}}, 200
+                        
+                    else:
+                        errorData = cloudinaryPicUploadResponse.json()
+                        return errorData, cloudinaryPicUploadResponse.status_code    
+
+                elif profilePicResponse.status_code == 400:
+                    errorData = profilePicResponse.json()
+                    if errorData['error']['code'] == 190:
+                        return {'message': errorData['error']['message']}, 401
+                else:
+                    responseData = profilePicResponse.json()
+                    return responseData, profilePicResponse.status_code
                 
                 print("1. get picurl form graphAPI\
                       2.Upload to cloudinary\
