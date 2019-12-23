@@ -116,13 +116,6 @@ class UserFacebookRegisterLogin(Resource):
                     responseData = profilePicResponse.json()
                     return responseData, profilePicResponse.status_code
                 
-                print("1. get picurl form graphAPI\
-                      2.Upload to cloudinary\
-                      3.Generate userlogin from email and using function\
-                      4. Create user with all data provided\
-                      5. Return tokens for created user ")
-             
-   
         elif profileDataResponse.status_code == 400:
             errorData = profileDataResponse.json()
             if errorData['error']['code'] == 190:
