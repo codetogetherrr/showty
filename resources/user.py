@@ -72,11 +72,12 @@ class UserFacebookRegisterLogin(Resource):
                         return responseData, profilePicResponse.status_code
                     
                 if not newData:
-                    
+                    print("nothing")    
                 else:
-                    
+                    print("nothing")
                     
             else:
+                print("nothing")
              
    
         elif profileDataResponse.status_code == 400:
