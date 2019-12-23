@@ -72,15 +72,12 @@ class UserFacebookRegisterLogin(Resource):
                         return responseData, profilePicResponse.status_code
                     
                 if not newData:
-                    #return (tokens, mergable=false).json()
+                    
                 else:
-                    #return (newData, tokens, mergable=true).json()
+                    
                     
             else:
-                #get_pic_url_from_graphapi()
-                #upload_pic_to_cloudinary() 
-                #add_imagedata_to_newData()
-	            #return newData.json()
+             
    
         elif profileDataResponse.status_code == 400:
             errorData = profileDataResponse.json()
