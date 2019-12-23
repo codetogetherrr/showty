@@ -1,7 +1,8 @@
 from flask_restful import Resource, reqparse
 from models.user import UserModel
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, create_refresh_token
 from flask import make_response, render_template
+from datetime import timedelta
 from werkzeug.security import generate_password_hash
 import requests
 import os
@@ -44,9 +45,9 @@ class UserFacebookRegisterLogin(Resource):
             profileData = profileDataResponse.json()
             if UserModel.find_by_email(profileData['email']):
                 newData = {}
-                if UserModel.find_by_email(profileData['email']).fullname == None:
+                if UserModel.find_by_email(profileData['email']).fullname == "":
                     newData['fullname'] = profileData['name']
-                if UserModel.find_by_email(profileData['email']).image_id == None:
+                if UserModel.find_by_email(profileData['email']).image_id == "":
                     profilePicResponse = self.get_facebook_profile_pic(320,320,data['facebook_access_token'])
                     if profilePicResponse.status_code == 200:
                         profilePicData = profilePicResponse.json()
@@ -72,12 +73,19 @@ class UserFacebookRegisterLogin(Resource):
                         return responseData, profilePicResponse.status_code
                     
                 if not newData:
-                    print("nothing")    
+                    login = UserModel.find_by_email(profileData['email']).login
+                    return {'tokens': {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=login)}, 'mergable': false}
                 else:
-                    print("nothing")
+                    login = UserModel.find_by_email(profileData['email']).login
+                    return {'user': newData, 'tokens': {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=login)}, 'mergable': false}
                     
             else:
-                print("nothing")
+                
+                print("1. get picurl form graphAPI\
+                      2.Upload to cloudinary\
+                      3.Generate userlogin from email and using function\
+                      4. Create user with all data provided\
+                      5. Return tokens for created user ")
              
    
         elif profileDataResponse.status_code == 400:
