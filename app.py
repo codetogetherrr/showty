@@ -35,6 +35,16 @@ def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return jti in blacklist
 
+@app.route('/test', methods=['GET'])
+@jwt_required
+def test():
+    current_user = get_jwt_identity()
+    user = UserModel.find_by_username(current_user)
+    if user.telephone == None:
+        return jsonify({"message": "No telephone"}), 400
+    return jsonify({"telephone": user.telephone}), 200
+        
+
 @app.route('/logout1', methods=['DELETE'])
 @jwt_required
 def logout1():
