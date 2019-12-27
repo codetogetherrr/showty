@@ -77,10 +77,10 @@ class UserFacebookRegisterLogin(Resource):
                     
                 if not newData:
                     login = UserModel.find_by_email(profileData['email']).login
-                    return {'tokens': {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=login)}, 'mergable': false}, 200
+                    return {'tokens': {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=login)}, 'mergeable': False}, 200
                 else:
                     login = UserModel.find_by_email(profileData['email']).login
-                    return {'user': newData, 'tokens': {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=login)}, 'mergable': false}, 200
+                    return {'user': newData, 'tokens': {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=login)}, 'mergeable': True}, 200
                     
             else:
                 
@@ -106,7 +106,7 @@ class UserFacebookRegisterLogin(Resource):
                         user.activated = True
                         user.save_to_db()
                         
-                        return {'tokens':{'access_token': create_access_token(identity=finalLogin,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=finalLogin)}}, 200
+                        return {'tokens':{'access_token': create_access_token(identity=finalLogin,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=finalLogin)}, 'mergeable': False}, 200
                         
                     else:
                         errorData = cloudinaryPicUploadResponse.json()
