@@ -102,7 +102,8 @@ class UserFacebookRegisterLogin(Resource):
                         image_height = cloudinaryPicUploadData['height']
                         image_width = cloudinaryPicUploadData['width']
                         
-                        user=UserModel(finalLogin, "", fullname, email, "", "", "", image_id, image_height, image_width, True)
+                        user=UserModel(finalLogin, "", fullname, email, "", "", "", image_id, image_height, image_width)
+                        user.activated = True
                         user.save_to_db()
                         
                         return {'tokens':{'access_token': create_access_token(identity=finalLogin,expires_delta=timedelta(seconds=120)), 'refresh_token': create_refresh_token(identity=finalLogin)}}, 200
