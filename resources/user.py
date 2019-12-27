@@ -132,7 +132,7 @@ class UserFacebookRegisterLogin(Resource):
             print("errorhere7")
             return responseData, profileDataResponse.status_code
 
-    def generateLogin(login):
+    def generateLogin(self, login):
 
         logins = UserModel.list_all_logins()
 
