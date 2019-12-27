@@ -62,14 +62,17 @@ class UserFacebookRegisterLogin(Resource):
                             newData['image_width'] = cloudinaryPicUploadData['width']
                         else:
                             errorData = cloudinaryPicUploadResponse.json()
+                            print("errorhere1")
                             return errorData, cloudinaryPicUploadResponse.status_code    
 
                     elif profilePicResponse.status_code == 400:
                         errorData = profilePicResponse.json()
                         if errorData['error']['code'] == 190:
+                            print("errorhere3")
                             return {'message': errorData['error']['message']}, 401
                     else:
                         responseData = profilePicResponse.json()
+                        print("errorhere2")
                         return responseData, profilePicResponse.status_code
                     
                 if not newData:
@@ -106,22 +109,27 @@ class UserFacebookRegisterLogin(Resource):
                         
                     else:
                         errorData = cloudinaryPicUploadResponse.json()
+                        print("errorhere4")
                         return errorData, cloudinaryPicUploadResponse.status_code    
 
                 elif profilePicResponse.status_code == 400:
                     errorData = profilePicResponse.json()
                     if errorData['error']['code'] == 190:
+                        print("errorhere5")
                         return {'message': errorData['error']['message']}, 401
                 else:
                     responseData = profilePicResponse.json()
+                    print("errorhere6")
                     return responseData, profilePicResponse.status_code
                 
         elif profileDataResponse.status_code == 400:
             errorData = profileDataResponse.json()
             if errorData['error']['code'] == 190:
+                print("errorhere6")
                 return {'message': errorData['error']['message']}, 401
         else:
             responseData = profileDataResponse.json()
+            print("errorhere7")
             return responseData, profileDataResponse.status_code
 
 def generateLogin(login):
