@@ -34,7 +34,7 @@ class UserFacebookRegisterLogin(Resource):
         headers = {'Content-Type': 'application/json'}
         payload = {'upload_preset': upload_preset, 'file': url}
         url = 'https://api.cloudinary.com/v1_1/' + cloud_name + '/image/upload'
-        cloudinaryPicUploadResponse = requests.post(url, headers=headers, data=payload)
+        cloudinaryPicUploadResponse = requests.get(url, headers=headers, params=payload)
         return cloudinaryPicUploadResponse
 
     def post(self):
