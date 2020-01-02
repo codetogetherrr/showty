@@ -15,6 +15,7 @@ from resources.comments import Comments
 from resources.comments import Comments_All
 from resources.likes import Likes
 from resources.likes import Likes_All
+from marshmallow import Schema, fields
 
 
 #Configurations
