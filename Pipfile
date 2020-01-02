@@ -9,7 +9,6 @@ verify_ssl = true
 flask = "*"
 aniso8601 = "*"
 click = "*"
-flask-jwt = "*"
 flask-jwt-extended = "*"
 flask-paginate = "*"
 flask-restful = "*"
@@ -19,7 +18,6 @@ marshmallow = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 requests = "*"
-numpy = "*"
 
 [requires]
 python_version = "3.7"
