@@ -1,14 +1,16 @@
 from flask_restful import Resource, reqparse
 from models.user import UserModel
+from schemas.user import UserSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, create_refresh_token
-from flask import make_response, render_template
+from flask import make_response, render_template, request
+from marshmallow import ValidationError
 from datetime import timedelta
 from werkzeug.security import generate_password_hash
 import requests
 import os
 import re
 
-
+user_schema = UserSchema()
 
 #Resource Register/Login Facebook
 class UserFacebookRegisterLogin(Resource):
@@ -152,70 +154,49 @@ class UserFacebookRegisterLogin(Resource):
 #Resource Register
 class UserRegister(Resource):
 
-    parser = reqparse.RequestParser()
-    parser.add_argument('login', type=str, required=True, help="This field cannot be left blank!")
-    parser.add_argument('password', type=str, required=True, help="This field cannot be left blank!")
-    parser.add_argument('fullname', type=str, required=False, help="Optional!")
-    parser.add_argument('email', type=str, required=True, help="This field cannot be left blank!")
-    parser.add_argument('telephone', type=str, required=False, help="Optional")
-    parser.add_argument('description',type=str,required=False,help="Optional")
-    parser.add_argument('gender',type=str,required=False,help="Optional")
-    parser.add_argument('image_id',type=str,required=False,help="Optional")
-    parser.add_argument('image_height',type=int,required=False,help="Optional")
-    parser.add_argument('image_width',type=int,required=False,help="Optional")
-
     def post(self):
-        data = UserRegister.parser.parse_args()
-        
-        if UserModel.find_by_username(data['login']):
+
+        try:
+            user = user_schema.load(request.get_json())
+        except ValidationError as err:
+            return err.messages, 400
+
+        if UserModel.find_by_username(user.login):
             return {"message": "User with that login already exists."}, 200
-        if UserModel.find_by_email(data['email']):
+        if UserModel.find_by_email(user.email):
             return {"message": "Email is already in use."}, 200
-        user=UserModel(data['login'],\
-                        generate_password_hash(data['password']),\
-                        data['fullname'],\
-                        data['email'],\
-                        data['telephone'],\
-                        data['description'],\
-                        data['gender'],\
-                        data['image_id'],\
-                        data['image_height'],\
-                        data['image_width'])
+
+        user.password = generate_password_hash(user.password)
+
         user.save_to_db()
-        user.send_conf_email()
+        #user.send_conf_email()
         return {"message": "User created successfully. Activation link sent to email provided"}, 201
 
 #Resource Users Information
 class UserProfile(Resource):
-
-    parser = reqparse.RequestParser()
-    parser.add_argument('login', type=str, required=False, help="Optional!")
-    parser.add_argument('fullname', type=str, required=False, help="Optional!")
-    parser.add_argument('email', type=str, required=False, help="Optional")
-    parser.add_argument('telephone', type=str, required=False, help="Optional")
-    parser.add_argument('description',type=str,required=False,help="Optional")
-    parser.add_argument('gender',type=str,required=False,help="Optional")
-    parser.add_argument('image_id',type=str,required=False,help="Optional")
-    parser.add_argument('image_height',type=int,required=False,help="Optional")
-    parser.add_argument('image_width',type=int,required=False,help="Optional")
 
     @jwt_required
     def get(self):
         login = get_jwt_identity()
         user=UserModel.find_by_username(login)
         if user:
-            return user.json()
+            return user_schema.dump(user), 200
         else:
             return {"message":"User not found"}, 404
 
     @jwt_required
     def put(self):
         login = get_jwt_identity()
-        data = UserProfile.parser.parse_args()
+        # update model using marshallow
+        try:
+            user_data = user_schema.load(request.get_json())
+        except ValidationError as err:
+            return err.messages, 400
+
         user=UserModel.find_by_username(login)
         if user:
-            for key, value in data.items():
-                if data[key] is not None:
+            for key, value in user_data.items():
+                if user_data[key] is not None:
                     setattr(user, key, value)
                     user.save_to_db()
             return {"message": "User profile updated successfully"}, 200
@@ -249,5 +230,5 @@ class UserConfirm(Resource):
 
 class UsersList(Resource):
     def get(self):
-        return {'users': [x.json() for x in UserModel.query.all()]}
+        return {'users': [user_schema.dump(x) for x in UserModel.query.all()]}
 

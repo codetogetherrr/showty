@@ -112,5 +112,8 @@ api.add_resource(Likes_All, '/likes_all')
 
 if __name__ == '__main__':
     from db import db
+    from ma import ma
+
     db.init_app(app)
+    ma.init_app(app)
     app.run(debug=True, threaded=True)
