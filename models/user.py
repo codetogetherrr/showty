@@ -19,17 +19,6 @@ class UserModel(db.Model):
     image_width = db.Column(db.Integer)
     activated = db.Column(db.Boolean, default=False)
 
-    def __init__(self, login, password, fullname, email, telephone, description, gender, image_id, image_height,image_width):
-        self.login = login
-        self.password = password
-        self.fullname = fullname
-        self.email = email
-        self.telephone = telephone
-        self.description = description
-        self.gender = gender
-        self.image_id = image_id
-        self.image_height = image_height
-        self.image_width = image_width
 
     @classmethod
     def list_all_logins(cls):
