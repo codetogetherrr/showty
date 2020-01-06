@@ -12,8 +12,3 @@ class UserSchema(ma.ModelSchema):
         model = UserModel
         load_only = ("password",)
 
-    email = fields.Str(missing=None, required=True)
-    password = fields.Str(missing=None, required=True)
-    login = fields.Str(missing=None, required=True)
-
-
