@@ -1,6 +1,6 @@
 from ma import ma
 from models.user import UserModel
-from flask_marshmallow import fields
+from marshmallow import fields
 
 
 
