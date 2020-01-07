@@ -188,17 +188,16 @@ class UserProfile(Resource):
     def put(self):
         login = get_jwt_identity()
         # update model using marshallow
-        try:
-            user_data = user_schema.load(request.get_json(), partial=True)
-        except ValidationError as err:
-            return err.messages, 400
-
-        user=UserModel.find_by_username(login)
+        user = UserModel.find_by_username(login)
         if user:
-            for key, value in user_data.items():
-                if user_data[key] is not None:
-                    setattr(user, key, value)
-                    user.save_to_db()
+            try:
+                user_to_update = user_schema.load(request.get_json(), partial=True, instance=user)
+            except ValidationError as err:
+                return err.messages, 400
+            # for key, value in user_data.items():
+            #     if user_data[key] is not None:
+            #         setattr(user, key, value)
+            user_to_update.save_to_db()
             return {"message": "User profile updated successfully"}, 200
         else:
             return {"message": "User not found"}, 404
