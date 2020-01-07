@@ -189,7 +189,7 @@ class UserProfile(Resource):
         login = get_jwt_identity()
         # update model using marshallow
         try:
-            user_data = user_schema.load(request.get_json())
+            user_data = user_schema.load(request.get_json(), partial=True)
         except ValidationError as err:
             return err.messages, 400
 
