@@ -191,7 +191,7 @@ class UserProfile(Resource):
         user = UserModel.find_by_username(login)
         if user:
             try:
-                user_to_update = user_schema.load(request.get_json(), partial=("password", "id", "login", "email"), instance=user)
+                user_to_update = user_schema.load(request.get_json(), partial=("password", "id", "email"), instance=user)
             except ValidationError as err:
                 return err.messages, 400
             # for key, value in user_data.items():
