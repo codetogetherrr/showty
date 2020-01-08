@@ -12,4 +12,5 @@ class UserSchema(ma.ModelSchema):
         model = UserModel
         load_only = ("password", "id", "image_id", "image_width", "image_height", "activated")
         dump_only = ("id", "activated")
+        update_fields = ('login',)
 
