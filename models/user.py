@@ -46,18 +46,6 @@ class UserModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def json(self):
-        return {'login': self.login,\
-                'password': self.password,\
-                'fullname': self.fullname,\
-                'email': self.email, \
-                'description': self.description,\
-                'image_id' : self.image_id,\
-                'image_height' : self.image_height,\
-                'image_width' : self.image_width,\
-                'gender' : self.gender,\
-                'telephone' : self.telephone
-                }
     def send_conf_email(self) -> Response:
         link = request.url_root[0:-1] + url_for("userconfirm", user_id=self.id)
 
