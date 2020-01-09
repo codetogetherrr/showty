@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.user import UserModel
-from schemas.user import UserSchema
+from schemas.user import UserSchema, UserUpdateSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, create_refresh_token
 from flask import make_response, render_template, request
 from marshmallow import ValidationError
