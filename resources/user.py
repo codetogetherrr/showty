@@ -11,6 +11,7 @@ import os
 import re
 
 user_schema = UserSchema()
+user_update_schema = UserUpdateSchema()
 
 #Resource Register/Login Facebook
 class UserFacebookRegisterLogin(Resource):
@@ -191,7 +192,7 @@ class UserProfile(Resource):
         user = UserModel.find_by_username(login)
         if user:
             try:
-                user_to_update = user_schema.load(request.get_json(), partial=("password", "id", "email", "login"), instance=user)
+                user_to_update = user_update_schema.load(request.get_json(), partial=True, instance=user)
             except ValidationError as err:
                 return err.messages, 400
             # for key, value in user_data.items():
