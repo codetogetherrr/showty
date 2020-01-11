@@ -9,13 +9,13 @@ from resources.user import UserRegister, UserProfile, UserConfirm
 from resources.user import UserFacebookRegisterLogin
 from models.user import UserModel
 from resources.user import UsersList
-from resources.post import Posts, AllPostsUser
+from resources.post import Post, Posts
 from resources.counts import Counts
 from resources.comments import Comments
 from resources.comments import Comments_All
 from resources.likes import Likes
 from resources.likes import Likes_All
-from marshmallow import Schema, fields
+
 
 
 #Configurations
@@ -101,9 +101,10 @@ api.add_resource(UserFacebookRegisterLogin, '/facebooklogin')
 api.add_resource(UserConfirm, '/userconfirm/<int:user_id>')
 api.add_resource(UserProfile, '/users/')
 api.add_resource(UsersList, '/userslist')
-api.add_resource(Posts, '/posts', endpoint = 'post')
-api.add_resource(Posts, '/posts/<post_id>')
-api.add_resource(AllPostsUser, '/userposts')
+api.add_resource(Post, '/post', endpoint='post')
+api.add_resource(Post, '/post', endpoint='get')
+api.add_resource(Post, '/post/<post_id>')
+api.add_resource(Posts, '/posts/<int:page>')
 api.add_resource(Counts, '/counts')
 api.add_resource(Comments, '/comment')
 api.add_resource(Comments_All, '/comments_all')
