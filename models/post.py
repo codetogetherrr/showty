@@ -8,20 +8,12 @@ class PostModel(db.Model):
     __tablename__ = 'posts'
 
     post_id = db.Column(db.Integer,primary_key=True)
-    image_id = db.Column(db.String(200))
-    image_width = db.Column(db.Integer)
-    image_height = db.Column(db.Integer)
+    image_id = db.Column(db.String(200), nullable=False)
+    image_width = db.Column(db.Integer, nullable=False)
+    image_height = db.Column(db.Integer, nullable=False)
     login = db.Column(db.String(80))
     description = db.Column(db.String(80))
     date = db.Column(db.DateTime)
-
-    def __init__(self, image_id, image_width, image_height,login, description, date):
-        self.image_id = image_id
-        self.image_width = image_width
-        self.image_height = image_height
-        self.login = login
-        self.description = description
-        self.date=date
 
     @classmethod
     def find_by_username(cls, login,page):

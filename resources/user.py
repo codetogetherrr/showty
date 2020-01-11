@@ -188,7 +188,6 @@ class UserProfile(Resource):
     @jwt_required
     def put(self):
         login = get_jwt_identity()
-        # update model using marshallow
         user = UserModel.find_by_username(login)
         if user:
             try:
