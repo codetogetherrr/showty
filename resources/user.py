@@ -209,6 +209,8 @@ class UserProfile(Resource):
         if user:
             user.delete_from_db()
             return {"message": "User deleted"}, 200
+        else:
+            return {"message": "User not found"}, 404
 
 
 

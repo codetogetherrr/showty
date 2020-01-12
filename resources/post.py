@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from models.post import PostModel
+from models.user import UserModel
 from schemas.post import PostSchema, PostUpdateSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.sql import func
@@ -14,22 +15,33 @@ class Post(Resource):
 
     @jwt_required
     def get(self):
+
         login = get_jwt_identity()
-        last_post = PostModel.find_last_post_login_user(login)
-        return post_schema.dump(last_post)
+        user = UserModel.find_by_username(login)
+        if user:
+            last_post = PostModel.find_last_post_login_user(login)
+            return post_schema.dump(last_post)
+        else:
+            return {"message": "User not found"}, 404
 
     @jwt_required
     def post(self):
-        user_login = get_jwt_identity()
-        try:
-            post = post_schema.load(request.get_json())
-        except ValidationError as err:
-            return err.messages, 400
+        login = get_jwt_identity()
+        user = UserModel.find_by_username(login)
+        if user:
+            try:
+                post = post_schema.load(request.get_json())
+            except ValidationError as err:
+                return err.messages, 400
+            post.login = login
+            post.date = func.now()
+            post.save_to_db()
+            return {"message": "Post added successfully."}, 201
+        else:
+            return {"message": "User not found"}, 404
 
-        post.login = user_login
-        post.date = func.now()
-        post.save_to_db()
-        return {"message": "Post added successfully."}, 201
+
+
 
     @jwt_required
     def put(self, post_id):

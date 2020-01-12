@@ -13,8 +13,8 @@ from resources.post import Post, Posts
 from resources.counts import Counts
 from resources.comments import Comments
 from resources.comments import Comments_All
-from resources.likes import Likes
-from resources.likes import Likes_All
+from resources.like import Like
+from resources.like import Likes
 
 
 
@@ -108,8 +108,8 @@ api.add_resource(Posts, '/posts/<int:page>')
 api.add_resource(Counts, '/counts')
 api.add_resource(Comments, '/comment')
 api.add_resource(Comments_All, '/comments_all')
-api.add_resource(Likes, '/like')
-api.add_resource(Likes_All, '/likes_all')
+api.add_resource(Like, '/like')
+api.add_resource(Likes, '/likes')
 
 if __name__ == '__main__':
     from db import db

@@ -1,19 +1,14 @@
 from db import db
-from flask import jsonify
-from flask_sqlalchemy import BaseQuery
 
-class LikesModel(db.Model):
+
+class LikeModel(db.Model):
 
     __tablename__ = 'likes'
 
     likes_id = db.Column(db.Integer,primary_key=True)
-    post_id = db.Column(db.Integer)
+    post_id = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.String(80))
-    
- 
-    def __init__(self, post_id, user_id):
-        self.post_id = post_id
-        self.user_id = user_id
+
         
     @classmethod
     def find_by_post_id(cls, post_id):

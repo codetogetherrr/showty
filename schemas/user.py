@@ -16,6 +16,7 @@ class UserSchema(ma.ModelSchema):
 
     class Meta:
         model = UserModel
-        load_only = ("password", "id", "image_id", "image_width", "image_height", "activated")
-        dump_only = ("id", "activated")
+        load_only = ("password", "image_id", "image_width", "image_height", "activated")
+        dump_only = ("activated", )
+        exclude = ("id",)
 

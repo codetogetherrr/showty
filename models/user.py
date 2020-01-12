@@ -3,6 +3,7 @@ from db import db
 from flask import request, url_for
 from requests import Response, post
 
+
 class UserModel(db.Model):
     __tablename__ = 'users'
 
