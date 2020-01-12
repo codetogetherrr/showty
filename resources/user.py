@@ -152,8 +152,10 @@ class UserFacebookRegisterLogin(Resource):
 
         return preLogin + str(iter)
 
-#Resource Register
-class UserRegister(Resource):
+
+
+
+class User(Resource):
 
     def post(self):
 
@@ -173,8 +175,6 @@ class UserRegister(Resource):
         #user.send_conf_email()
         return {"message": "User created successfully. Activation link sent to email provided"}, 201
 
-#Resource Users Information
-class UserProfile(Resource):
 
     @jwt_required
     def get(self):

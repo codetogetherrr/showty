@@ -5,12 +5,12 @@ from flask_restful import Api
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,jwt_refresh_token_required, create_refresh_token, get_jwt_identity, get_raw_jwt)
 from datetime import timedelta
 from werkzeug.security import check_password_hash
-from resources.user import UserRegister, UserProfile, UserConfirm
+from resources.user import UserRegister, User, UserConfirm
 from resources.user import UserFacebookRegisterLogin
 from models.user import UserModel
 from resources.user import UsersList
 from resources.post import Post, Posts
-from resources.counts import Counts
+from resources.count import Count
 from resources.comments import Comments
 from resources.comments import Comments_All
 from resources.like import Like
@@ -99,13 +99,14 @@ def protected():
 api.add_resource(UserRegister, '/register')
 api.add_resource(UserFacebookRegisterLogin, '/facebooklogin')
 api.add_resource(UserConfirm, '/userconfirm/<int:user_id>')
-api.add_resource(UserProfile, '/users/')
+api.add_resource(User, '/user')
+api.add_resource(User, '/user/register', endpoint='post')
 api.add_resource(UsersList, '/userslist')
 api.add_resource(Post, '/post')
 api.add_resource(Post, '/post/<post_id>', endpoint='put')
 api.add_resource(Post, '/post/<post_id>', endpoint='delete')
 api.add_resource(Posts, '/posts/<int:page>')
-api.add_resource(Counts, '/counts')
+api.add_resource(Count, '/counts')
 api.add_resource(Comments, '/comment')
 api.add_resource(Comments_All, '/comments_all')
 api.add_resource(Like, '/like')
