@@ -99,10 +99,10 @@ def protected():
 
 api.add_resource(UserFacebookRegisterLogin, '/facebooklogin')
 api.add_resource(UserConfirm, '/userconfirm/<int:user_id>')
-api.add_resource(User, '/user')
+api.add_resource(User, '/user', methods=['GET', 'PUT', 'DELETE'])
 api.add_resource(User, '/user/register', methods=['POST'])
 api.add_resource(UsersList, '/userslist')
-api.add_resource(Post, '/post')
+api.add_resource(Post, '/post', methods=['GET', 'POST'])
 api.add_resource(Post, '/post/<post_id>', methods=['PUT', 'DELETE'])
 api.add_resource(Posts, '/posts/<int:page>')
 api.add_resource(Count, '/counts')
