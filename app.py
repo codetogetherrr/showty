@@ -10,7 +10,6 @@ from resources.user import UserFacebookRegisterLogin
 from models.user import UserModel
 from resources.user import UsersList
 from resources.post import Post, Posts
-from resources.count import Count
 from resources.comments import Comments
 from resources.comments import Comments_All
 from resources.like import Like
@@ -106,7 +105,6 @@ api.add_resource(Post, '/post', methods=['GET', 'POST'], endpoint='creategetpost
 api.add_resource(Post, '/post/<post_id>', methods=['PUT', 'DELETE'], endpoint='modifydeletepost')
 api.add_resource(Posts, '/posts/<int:page>', methods=['GET'], endpoint='getpageofposts')
 api.add_resource(Posts, '/posts/<login>', methods=['POST'], endpoint='getnoofposts')
-api.add_resource(Count, '/counts')
 api.add_resource(Comments, '/comment')
 api.add_resource(Comments_All, '/comments_all')
 api.add_resource(Like, '/like')
