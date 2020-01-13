@@ -75,5 +75,13 @@ class Posts(Resource):
     def get(self, page):
         login = get_jwt_identity()
         return {'posts_user': [post_schema.dump(x) for x in PostModel.find_by_username(login, page).items]}
-
+    
+    @jwt_required
+    def post(self, login):
+        user = UserModel.find_by_username(login)
+        if user:
+            no_of_posts=PostModel.count_post_login(login)
+            return {'post_count': no_of_posts}
+        else:
+            return {"message": "User not found"}, 404
 
