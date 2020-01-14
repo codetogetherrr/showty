@@ -18,15 +18,7 @@ class LikeModel(db.Model):
     @classmethod
     def find_by_user_id(cls, user_id, post_id):
         all_likes= cls.query.filter_by(user_id=user_id, post_id=post_id).first()
-        return all_likes   
-
-    def json(self):
-        return {'post_id' : self.post_id,
-                'user_id' : self.user_id}
-    
-    def json_user_id(self):
-        return {'user_id' : self.user_id}
-    
+        return all_likes
 
     def save_to_db(self):
         db.session.add(self)

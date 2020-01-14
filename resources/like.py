@@ -4,6 +4,7 @@ from models.user import UserModel
 from models.like import LikeModel
 from schemas.like import LikeSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from marshmallow import ValidationError
 
 
 like_schema = LikeSchema()
@@ -19,7 +20,11 @@ class Like(Resource):
         user = UserModel.find_by_username(login)
 
         if user:
-            new_like = like_schema.load(request.get_json())
+            try:
+                new_like = like_schema.load(request.get_json())
+            except ValidationError as err:
+                return err.messages, 400
+
             existing_like = LikeModel.find_by_user_id(user.login, new_like.post_id)
         
             if new_like.user_id == existing_like.user_id and new_like.post_id == existing_like.post_id:

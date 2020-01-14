@@ -13,7 +13,7 @@ import re
 user_schema = UserSchema()
 user_update_schema = UserUpdateSchema()
 
-#Resource Register/Login Facebook
+
 class UserFacebookRegisterLogin(Resource):
 
     parser = reqparse.RequestParser()
@@ -194,9 +194,6 @@ class User(Resource):
                 user_to_update = user_update_schema.load(request.get_json(), partial=True, instance=user)
             except ValidationError as err:
                 return err.messages, 400
-            # for key, value in user_data.items():
-            #     if user_data[key] is not None:
-            #         setattr(user, key, value)
             user_to_update.save_to_db()
             return {"message": "User profile updated successfully"}, 200
         else:
@@ -213,7 +210,6 @@ class User(Resource):
             return {"message": "User not found"}, 404
 
 
-
 class UserConfirm(Resource):
     @classmethod
     def get(cls, user_id:int):
@@ -227,9 +223,8 @@ class UserConfirm(Resource):
         return make_response(render_template("confirmation_page.html", email=user.email), 200, headers)
 
 
-        
-
-class UsersList(Resource):
+class Users(Resource):
+    @jwt_required
     def get(self):
         return {'users': [user_schema.dump(x) for x in UserModel.query.all()]}
 
