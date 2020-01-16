@@ -11,7 +11,7 @@ follow_schema = FollowSchema()
 
 class Follow(Resource):
 
-		@jwt_required
+    @jwt_required
     def post(self):
 
         login = get_jwt_identity()
@@ -25,13 +25,13 @@ class Follow(Resource):
 
             existing_follow = FollowModel.find_specific_follow(user.login, new_follow.followee_login)
         
-            if user.login == existing_follow.follower_login and new_follow.followee_login == existing_follow.followee_login
-:
+            if user.login == existing_follow.follower_login and new_follow.followee_login == existing_follow.followee_login:
+
                 existing_follow.delete_from_db()
 
                 return {'message': 'user unfollowed'}, 200
             else:
-								new_follow.follower_login = user.login
+                new_follow.follower_login = user.login
                 new_follow.save_to_db()
                 return {"message": "user followed"}, 201
         else:
