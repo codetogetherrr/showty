@@ -27,7 +27,7 @@ class Follow(Resource):
 
                 existing_follow = FollowModel.find_specific_follow(user.login, new_follow.followee_login)
         
-                if user.login == existing_follow.follower_login and new_follow.followee_login == existing_follow.followee_login:
+                if existing_follow:
 
                     existing_follow.delete_from_db()
 
