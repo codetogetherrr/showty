@@ -33,16 +33,6 @@ class PostModel(db.Model):
     def count_post_login(cls, login):
         count_post = cls.query.filter_by(login=login).count()
         return count_post
-    
-    def json(self):
-        return {'post_id' : self.post_id,\
-                'image_id': self.image_id,\
-                'image_width': self.image_width,\
-                'image_height': self.image_height,\
-                'login' : self.login,\
-                'description' : self.description,\
-                'date': self.date
-                }
 
     def save_to_db(self):
         db.session.add(self)
