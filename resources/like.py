@@ -27,7 +27,7 @@ class Like(Resource):
 
             existing_like = LikeModel.find_by_user_id(user.login, new_like.post_id)
         
-            if new_like.user_id == existing_like.user_id and new_like.post_id == existing_like.post_id:
+            if existing_like:
                 existing_like.delete_from_db()
 
                 return {'message': 'unliked'}, 200
