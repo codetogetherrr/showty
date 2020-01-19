@@ -1,7 +1,5 @@
 from db import db
-from flask import jsonify
-from flask_sqlalchemy import BaseQuery
-from flask_paginate import Pagination
+
 
 class PostModel(db.Model):
 
@@ -16,7 +14,7 @@ class PostModel(db.Model):
     date = db.Column(db.DateTime)
 
     @classmethod
-    def find_by_username(cls, login,page):
+    def get_paginated_posts(cls, login, page):
         user_list = cls.query.filter_by(login=login).order_by(PostModel.date.desc()).paginate(page=page, per_page=9, error_out=False)
         return user_list
 
@@ -25,12 +23,12 @@ class PostModel(db.Model):
         return cls.query.filter_by(post_id=post_id).first()
 
     @classmethod
-    def find_last_post_login_user(cls, login):
+    def get_last_post(cls, login):
         login_user_post = cls.query.filter_by(login=login).order_by(PostModel.date.desc()).first()
         return login_user_post
     
     @classmethod
-    def count_post_login(cls, login):
+    def count_posts(cls, login):
         count_post = cls.query.filter_by(login=login).count()
         return count_post
 

@@ -20,6 +20,11 @@ class LikeModel(db.Model):
         all_likes= cls.query.filter_by(user_id=user_id, post_id=post_id).first()
         return all_likes
 
+    @classmethod
+    def count_likes(cls, post_id):
+        no_of_likes = cls.query.filter_by(post_id=post_id).count()
+        return no_of_likes
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()

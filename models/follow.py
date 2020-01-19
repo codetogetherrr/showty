@@ -19,6 +19,16 @@ class FollowModel(db.Model):
     def find_who_user_follows(cls, user_login):
         followees = cls.query.filter_by(follower_login=user_login)
         return followees
+
+    @classmethod
+    def count_followers_of_user(cls, user_login):
+        no_of_followers = cls.query.filter_by(followee_login=user_login).count()
+        return no_of_followers
+
+    @classmethod
+    def count_followees_user_follows(cls, user_login):
+        no_of_followees = cls.query.filter_by(follower_login=user_login).count()
+        return no_of_followees
     
     @classmethod
     def find_specific_follow(cls, follower_login, followee_login):

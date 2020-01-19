@@ -9,6 +9,7 @@ from marshmallow import ValidationError
 
 follow_schema = FollowSchema()
 
+
 class Follow(Resource):
 
     @jwt_required
@@ -41,3 +42,29 @@ class Follow(Resource):
 
         else:
             return {"message":"User not found"}, 404
+
+class Follows(Resource):
+
+    @jwt_required
+    def get(self, user_login):
+
+        login = get_jwt_identity()
+        user = UserModel.find_by_username(login)
+        if user:
+            return {'followers': [follow_schema.dump(x) for x in FollowModel.find_followers_of_user(user_login)],
+                    'followes': [follow_schema.dump(x) for x in FollowModel.find_who_user_follows(user_login)]}
+        else:
+            return {"message": "User not found"}, 404
+
+    @jwt_required
+    def post(self, user_login):
+
+        login = get_jwt_identity()
+        user = UserModel.find_by_username(login)
+        if user:
+            no_of_followers = FollowModel.count_followers_of_user(user_login)
+            no_of_followees = FollowModel.count_followees_user_follows(user_login)
+
+            return {'followers_count': no_of_followers, 'followees_count': no_of_followees}
+        else:
+            return {"message": "User not found"}, 404

@@ -19,7 +19,7 @@ class Post(Resource):
         login = get_jwt_identity()
         user = UserModel.find_by_username(login)
         if user:
-            last_post = PostModel.find_last_post_login_user(login)
+            last_post = PostModel.get_last_post(login)
             return post_schema.dump(last_post)
         else:
             return {"message": "User not found"}, 404
@@ -78,7 +78,7 @@ class Posts(Resource):
         user = UserModel.find_by_username(login)
         if user:
 
-            return {'posts_user': [post_schema.dump(x) for x in PostModel.find_by_username(login, page).items]}
+            return {'posts_user': [post_schema.dump(x) for x in PostModel.get_paginated_posts(login, page).items]}
         else:
             return {"message": "User not found"}, 404
     
@@ -86,8 +86,8 @@ class Posts(Resource):
     def post(self, login):
         user = UserModel.find_by_username(login)
         if user:
-            no_of_posts=PostModel.count_post_login(login)
-            return {'post_count': no_of_posts}
+            no_of_posts=PostModel.count_posts(login)
+            return {'posts_count': no_of_posts}
         else:
             return {"message": "User not found"}, 404
 

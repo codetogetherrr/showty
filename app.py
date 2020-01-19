@@ -14,6 +14,7 @@ from resources.comment import Comments
 from resources.like import Like
 from resources.like import Likes
 from resources.follow import Follow
+from resources.follow import Follows
 
 
 
@@ -100,8 +101,9 @@ api.add_resource(Comment, '/comment/<int:comment_id>' , methods=['PUT', 'DELETE'
 api.add_resource(Comment, '/comment', methods=['POST'], endpoint='addcomment')
 api.add_resource(Comments, '/comments')
 api.add_resource(Like, '/like')
-api.add_resource(Likes, '/likes')
+api.add_resource(Likes, '/likes/<post_id>')
 api.add_resource(Follow, '/follow')
+api.add_resource(Follows, '/follows/<user_login>')
 
 if __name__ == '__main__':
     from db import db

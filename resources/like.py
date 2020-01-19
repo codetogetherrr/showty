@@ -53,3 +53,14 @@ class Likes(Resource):
 
         else:
             return {"message":"User not found"}, 404
+
+    @jwt_required
+    def post(self, post_id):
+
+        login = get_jwt_identity()
+        user = UserModel.find_by_username(login)
+        if user:
+            no_of_likes = LikeModel.count_likes(post_id)
+            return {'likes_count': no_of_likes}
+        else:
+            return {"message": "User not found"}, 404
