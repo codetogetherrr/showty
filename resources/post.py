@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask import request
 from models.post import PostModel
 from models.user import UserModel
+from models.hashtag import HashtagModel
 from schemas.post import PostSchema, PostUpdateSchema
 from schemas.hashtag import HashtagSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
