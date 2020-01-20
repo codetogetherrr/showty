@@ -3,12 +3,14 @@ from flask import request
 from models.post import PostModel
 from models.user import UserModel
 from schemas.post import PostSchema, PostUpdateSchema
+from schemas.hashtag import HashtagSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.sql import func
 from marshmallow import ValidationError
 
 post_schema = PostSchema()
 post_update_schema = PostUpdateSchema()
+hashtag_schema = HashtagSchema()
 
 
 class Post(Resource):
@@ -53,9 +55,18 @@ class Post(Resource):
                     post_to_update = post_update_schema.load(request.get_json(), partial=True, instance=post)
                 except ValidationError as err:
                     return err.messages, 400
+                possible_hashtags = HashtagModel.find_hashtags_in_text(post_to_update.description)
+                if possible_hashtags:
+                    for hashtag in possible_hashtags:
+                        hashtag_data = {"post_id": post.post_id , "hashtag": hashtag}
+                        new_hashtag = hashtag_schema.load(hashtag_data)
+                        new_hashtag.save_to_db()
 
-                post_to_update.save_to_db()
-                return {"message": "Post updated successfully."}, 200
+                    post_to_update.save_to_db()
+                    return {"message": "Post updated successfully."}, 200    
+                else:
+                    post_to_update.save_to_db()
+                    return {"message": "Post updated successfully."}, 200
         else:
             return {'message': 'It is not a post of logged in user'}, 404
 
@@ -81,7 +92,7 @@ class Posts(Resource):
             return {'posts_user': [post_schema.dump(x) for x in PostModel.get_paginated_posts(login, page).items]}
         else:
             return {"message": "User not found"}, 404
-    
+
     @jwt_required
     def post(self, login):
         user = UserModel.find_by_username(login)
@@ -90,4 +101,3 @@ class Posts(Resource):
             return {'posts_count': no_of_posts}
         else:
             return {"message": "User not found"}, 404
-
