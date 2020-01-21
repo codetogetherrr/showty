@@ -36,6 +36,12 @@ class Post(Resource):
                 post = post_schema.load(request.get_json())
             except ValidationError as err:
                 return err.messages, 400
+            possible_hashtags = HashtagModel.find_hashtags_in_text(post_to_update.description)
+            if possible_hashtags:
+                for hashtag in possible_hashtags:
+                    hashtag_data = {"post_id": post.post_id , "hashtag": hashtag}
+                    new_hashtag = hashtag_schema.load(hashtag_data)
+                    new_hashtag.save_to_db()
             post.login = login
             post.date = func.now()
             post.save_to_db()
@@ -59,15 +65,13 @@ class Post(Resource):
                 possible_hashtags = HashtagModel.find_hashtags_in_text(post_to_update.description)
                 if possible_hashtags:
                     for hashtag in possible_hashtags:
-                        hashtag_data = {"post_id": post.post_id , "hashtag": hashtag}
-                        new_hashtag = hashtag_schema.load(hashtag_data)
-                        new_hashtag.save_to_db()
-
-                    post_to_update.save_to_db()
-                    return {"message": "Post updated successfully."}, 200    
-                else:
-                    post_to_update.save_to_db()
-                    return {"message": "Post updated successfully."}, 200
+                        existing_hashtag = HashtagModel.find_only_for_post(hashtag, post.post_id)
+                        if not existing_hashtag:
+                            hashtag_data = {"post_id": post.post_id , "hashtag": hashtag}
+                            new_hashtag = hashtag_schema.load(hashtag_data)
+                            new_hashtag.save_to_db()
+                post_to_update.save_to_db()
+                return {"message": "Post updated successfully."}, 200
         else:
             return {'message': 'It is not a post of logged in user'}, 404
 
