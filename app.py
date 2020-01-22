@@ -15,6 +15,7 @@ from resources.like import Like
 from resources.like import Likes
 from resources.follow import Follow
 from resources.follow import Follows
+from resources.hashtag import Hashtags
 
 
 
@@ -104,6 +105,7 @@ api.add_resource(Like, '/like')
 api.add_resource(Likes, '/likes/<post_id>')
 api.add_resource(Follow, '/follow')
 api.add_resource(Follows, '/follows/<user_login>')
+api.add_resource(Hashtags, '/hashtags/<hashtag>')
 
 if __name__ == '__main__':
     from db import db

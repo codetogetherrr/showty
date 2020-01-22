@@ -20,6 +20,7 @@ class PostModel(db.Model):
 
     @classmethod
     def find_by_post_id(cls, post_id):
+
         return cls.query.filter_by(post_id=post_id).first()
 
     @classmethod

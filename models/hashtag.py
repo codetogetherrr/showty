@@ -17,8 +17,18 @@ class HashtagModel(db.Model):
         return hashtags
 
     @classmethod
+    def get_items_with_hashtag(cls, hashtag):
+        items = cls.query.filter_by(hashtag=hashtag)
+        return items
+
+    @classmethod
     def find_only_for_post(cls, hashtag, post_id):
         hashtag = cls.query.filter_by(hashtag=hashtag, post_id=post_id, comment_id=None).first()
+        return hashtag
+
+    @classmethod
+    def find_only_for_comment(cls, hashtag, post_id, comment_id):
+        hashtag = cls.query.filter_by(hashtag=hashtag, post_id=post_id, comment_id=comment_id).first()
         return hashtag
 
     def save_to_db(self):
