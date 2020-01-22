@@ -11,7 +11,7 @@ class PostModel(db.Model):
     image_height = db.Column(db.Integer, nullable=False)
     login = db.Column(db.String(80))
     description = db.Column(db.String(80))
-    date = db.Column(db.DateTime)
+    date = db.Column(db.String(80))
 
     @classmethod
     def get_paginated_posts(cls, login, page):
