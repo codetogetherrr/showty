@@ -28,6 +28,15 @@ class Comment(Resource):
             new_comment.login_id = user.id
             new_comment.comment_date = func.now()
             new_comment.save_to_db()
+
+            possible_hashtags = HashtagModel.find_hashtags_in_text(new_comment.comment)
+            if possible_hashtags:
+                for hashtag in possible_hashtags:
+                    existing_hashtag = HashtagModel.find_only_for_comment(hashtag, new_comment.post_id,new_comment.comment_id)
+                    if not existing_hashtag:
+                        hashtag_data = {"post_id": new_comment.post_id, "hashtag": hashtag, "comment_id": new_comment.comment_id}
+                        new_hashtag = hashtag_schema.load(hashtag_data)
+                        new_hashtag.save_to_db()
             return {"message": "Comment added successfully."}, 201
         else:
             return {"message": "User not found"}, 404
@@ -48,6 +57,14 @@ class Comment(Resource):
                         comment_to_update = comment_update_schema.load(request.get_json(), partial=True, instance=existing_comment)
                     except ValidationError as err:
                         return err.messages, 400
+                    possible_hashtags = HashtagModel.find_hashtags_in_text(existing_comment.comment)
+                    if possible_hashtags:
+                        for hashtag in possible_hashtags:
+                            existing_hashtag = HashtagModel.find_only_for_comment(hashtag, existing_comment.post_id,existing_comment.comment_id)
+                            if not existing_hashtag:
+                                hashtag_data = {"post_id": existing_comment.post_id, "hashtag": hashtag, "comment_id": existing_comment.comment_id}
+                                new_hashtag = hashtag_schema.load(hashtag_data)
+                                new_hashtag.save_to_db()
                     comment_to_update.save_to_db()
                     return {"message": "Comment updated successfully."}, 200
                 else:
