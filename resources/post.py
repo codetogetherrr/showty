@@ -44,9 +44,11 @@ class Post(Resource):
             possible_hashtags = HashtagModel.find_hashtags_in_text(post.description)
             if possible_hashtags:
                 for hashtag in possible_hashtags:
-                    hashtag_data = {"post_id": post.post_id, "hashtag": hashtag}
-                    new_hashtag = hashtag_schema.load(hashtag_data)
-                    new_hashtag.save_to_db()
+                    existing_hashtag = HashtagModel.find_only_for_post(hashtag, post.post_id)
+                    if not existing_hashtag:
+                        hashtag_data = {"post_id": post.post_id, "hashtag": hashtag}
+                        new_hashtag = hashtag_schema.load(hashtag_data)
+                        new_hashtag.save_to_db()
             return {"message": "Post added successfully."}, 201
         else:
             return {"message": "User not found"}, 404

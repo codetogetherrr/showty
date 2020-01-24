@@ -3,16 +3,18 @@ from flask import request
 from models.comment import CommentModel
 from models.user import UserModel
 from schemas.comment import CommentSchema, CommentUpdateSchema
+from schemas.hashtag import HashtagSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.sql import func
 from marshmallow import ValidationError
 
 comment_schema = CommentSchema()
 comment_update_schema = CommentUpdateSchema()
+hashtag_schema = HashtagSchema()
 
 
 class Comment(Resource):
-    
+
     @jwt_required
     def post(self):
 
@@ -74,7 +76,7 @@ class Comment(Resource):
 
 class Comments(Resource):
 
-    
+
     @jwt_required
     def get(self, post_id):
 
