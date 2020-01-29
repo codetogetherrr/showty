@@ -51,8 +51,8 @@ class Follows(Resource):
         login = get_jwt_identity()
         user = UserModel.find_by_username(login)
         if user:
-            return {'followers': [x for x in FollowModel.find_followers_of_user(user_login).follower_login],
-                    'followees': [x for x in FollowModel.find_who_user_follows(user_login).followee_login]}
+            return {'followers': [x.follower_login for x in FollowModel.find_followers_of_user(user_login)],
+                    'followees': [x.followee_login for x in FollowModel.find_who_user_follows(user_login)]}
         else:
             return {"message": "User not found"}, 404
 
