@@ -152,7 +152,16 @@ class UserFacebookRegisterLogin(Resource):
 
         return preLogin + str(iter)
 
+class CurrentUser(Resource):
 
+    @jwt_required
+    def get(self):
+        login = get_jwt_identity()
+        user = UserModel.find_by_username(login)
+        if user:
+            return user_schema.dump(user), 200
+        else:
+            return {"message": "User not found"}, 404
 
 
 class User(Resource):
@@ -177,11 +186,15 @@ class User(Resource):
 
 
     @jwt_required
-    def get(self):
+    def get(self, user_login):
         login = get_jwt_identity()
         user=UserModel.find_by_username(login)
         if user:
-            return user_schema.dump(user), 200
+            user_to_return = UserModel.find_by_username(user_login)
+            if user_to_return:
+                return user_schema.dump(user_to_return), 200
+            else:
+                {"message": "User not found"}, 404
         else:
             return {"message":"User not found"}, 404
 
