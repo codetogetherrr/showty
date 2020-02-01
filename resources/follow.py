@@ -2,31 +2,27 @@ from flask_restful import Resource
 from flask import request
 from models.user import UserModel
 from models.follow import FollowModel
-from schemas.follow import FollowSchema, FollowGetSchema
+from schemas.follow import FollowSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 
 
 follow_schema = FollowSchema()
-follow_get_schema = FollowGetSchema()
+
 
 class Follow(Resource):
 
     @jwt_required
-    def get(self):
+    def get(self, follower_login, followee_login):
 
         login = get_jwt_identity()
         user = UserModel.find_by_username(login)
 
         if user:
-            try:
-                check_follow = follow_get_schema.load(request.get_json())
-            except ValidationError as err:
-                return err.messages, 400
-            user_to_check = UserModel.find_by_username(check_follow.followee_login)
+            user_to_check = UserModel.find_by_username(followee_login)
             if user_to_check:
 
-                existing_follow = FollowModel.find_specific_follow(check_follow.follower_login, check_follow.followee_login)
+                existing_follow = FollowModel.find_specific_follow(follower_login, followee_login)
 
                 if existing_follow:
 
