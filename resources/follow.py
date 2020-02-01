@@ -5,7 +5,7 @@ from models.follow import FollowModel
 from schemas.follow import FollowSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
-k
+
 
 follow_schema = FollowSchema()
 
