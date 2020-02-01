@@ -5,7 +5,7 @@ from models.follow import FollowModel
 from schemas.follow import FollowSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
-
+k
 
 follow_schema = FollowSchema()
 
@@ -45,7 +45,7 @@ class Follow(Resource):
 
         if user:
             try:
-                new_follow = follow_schema.load(request.get_json())
+                new_follow = follow_schema.load(request.get_json(), partial=True)
             except ValidationError as err:
                 return err.messages, 400
             user_to_follow = UserModel.find_by_username(new_follow.followee_login)
