@@ -92,13 +92,19 @@ class Post(Resource):
 class Posts(Resource):
 
     @jwt_required
-    def get(self, page):
+    def get(self, page, user_login):
 
         login = get_jwt_identity()
         user = UserModel.find_by_username(login)
         if user:
+            user_to_get_posts = UserModel.find_by_username(user_login)
 
-            return {'posts_user': [post_schema.dump(x) for x in PostModel.get_paginated_posts(login, page).items]}
+            if user_to_get_posts:
+
+                return {'posts_user': [post_schema.dump(x) for x in PostModel.get_paginated_posts(user_login, page).items]}
+            else:
+                return {"message": "User not found"}, 404
+
         else:
             return {"message": "User not found"}, 404
 
