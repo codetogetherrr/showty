@@ -6,7 +6,7 @@ class CommentSchema(ma.ModelSchema):
 
     class Meta:
         model = CommentModel
-        dump_only = ("comment_date", "comment_id", "user_id")
+        dump_only = ("comment_date", "comment_id", "login")
 
 
 
@@ -14,4 +14,4 @@ class CommentUpdateSchema(ma.ModelSchema):
 
     class Meta:
         model = CommentModel
-        exclude = ("comment_date", "comment_id", "user_id", "post_id")
+        exclude = ("comment_date", "comment_id", "login", "post_id")

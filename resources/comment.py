@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from models.comment import CommentModel
+from models.hashtag import HashtagModel
 from models.user import UserModel
 from schemas.comment import CommentSchema, CommentUpdateSchema
 from schemas.hashtag import HashtagSchema
@@ -25,7 +26,7 @@ class Comment(Resource):
                 new_comment = comment_schema.load(request.get_json())
             except ValidationError as err:
                 return err.messages, 400
-            new_comment.login_id = user.id
+            new_comment.login = user.login
             new_comment.comment_date = func.now()
             new_comment.save_to_db()
 
@@ -52,7 +53,7 @@ class Comment(Resource):
         if user:
             existing_comment = CommentModel.find_by_comment_id(comment_id)
             if existing_comment:
-                if existing_comment.user_id == user.id:
+                if existing_comment.login == user.login:
                     try:
                         comment_to_update = comment_update_schema.load(request.get_json(), partial=True, instance=existing_comment)
                     except ValidationError as err:
@@ -82,7 +83,7 @@ class Comment(Resource):
         if user:
             comment_to_be_deleted = CommentModel.find_by_comment_id(comment_id)
             if comment_to_be_deleted:
-                if comment_to_be_deleted.user_id == user.id:
+                if comment_to_be_deleted.login == user.login:
                     comment_to_be_deleted.delete_from_db()
                     return {'message': 'Comment deleted'}, 200
                 else:

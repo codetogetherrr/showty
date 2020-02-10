@@ -7,7 +7,7 @@ class CommentModel(db.Model):
 
     comment_id = db.Column(db.Integer,primary_key=True)
     post_id = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)
+    login = db.Column(db.String(80), nullable=False)
     comment = db.Column(db.String(200), nullable=False)
     comment_date = db.Column(db.DateTime)
 
