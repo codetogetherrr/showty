@@ -6,5 +6,5 @@ class LikeSchema(ma.ModelSchema):
 
     class Meta:
         model = LikeModel
-        dump_only = ("user_id",)
+        dump_only = ("login",)
         exclude = ("likes_id",)

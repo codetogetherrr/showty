@@ -7,7 +7,7 @@ class LikeModel(db.Model):
 
     likes_id = db.Column(db.Integer,primary_key=True)
     post_id = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.String(80))
+    login = db.Column(db.String(80))
 
         
     @classmethod
@@ -16,8 +16,8 @@ class LikeModel(db.Model):
         return all_likes
     
     @classmethod
-    def find_by_user_id(cls, user_id, post_id):
-        all_likes= cls.query.filter_by(user_id=user_id, post_id=post_id).first()
+    def find_by_user_id(cls, login, post_id):
+        all_likes= cls.query.filter_by(login=login, post_id=post_id).first()
         return all_likes
 
     @classmethod
