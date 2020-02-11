@@ -102,7 +102,7 @@ api.add_resource(Posts, '/posts/<user_login>/<int:page>', methods=['GET'], endpo
 api.add_resource(Posts, '/posts/<login>', methods=['POST'], endpoint='getnoofposts')
 api.add_resource(Comment, '/comment/<int:comment_id>' , methods=['PUT', 'DELETE'], endpoint='modifydeletcomment')
 api.add_resource(Comment, '/comment', methods=['POST'], endpoint='addcomment')
-api.add_resource(Comments, '/comments')
+api.add_resource(Comments, '/comments/<post_id>')
 api.add_resource(Like, '/like')
 api.add_resource(Likes, '/likes/<post_id>')
 api.add_resource(Follow, '/follow', methods=['POST'], endpoint='addfollow')
