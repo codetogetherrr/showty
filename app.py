@@ -16,6 +16,7 @@ from resources.like import Likes
 from resources.follow import Follow
 from resources.follow import Follows
 from resources.hashtag import Hashtags
+from resources.search import Search
 
 
 
@@ -110,6 +111,8 @@ api.add_resource(Follow, '/follow', methods=['POST'], endpoint='addfollow')
 api.add_resource(Follow, '/follow/<follower_login>/<followee_login>', methods=['GET'], endpoint='checkfollow')
 api.add_resource(Follows, '/follows/<user_login>')
 api.add_resource(Hashtags, '/hashtags/<hashtag>')
+api.add_resource(Search, '/search/<keyword>')
+
 
 if __name__ == '__main__':
     from db import db
