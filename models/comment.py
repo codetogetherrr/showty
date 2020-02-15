@@ -9,7 +9,7 @@ class CommentModel(db.Model):
     post_id = db.Column(db.Integer, nullable=False)
     login = db.Column(db.String(80))
     comment = db.Column(db.String(500), nullable=False)
-    comment_date = db.Column(db.DateTime)
+    comment_date = db.Column(db.String(80))
 
 
     @classmethod
