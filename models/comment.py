@@ -18,6 +18,11 @@ class CommentModel(db.Model):
         return all_comments
 
     @classmethod
+    def get_last_comment(cls, post_id):
+        recent_comment = cls.query.filter_by(post_id=post_id).order_by(CommentModel.comment_date.asc()).first()
+        return recent_comment
+
+    @classmethod
     def find_by_comment_id(cls, comment_id):
         return cls.query.filter_by(comment_id=comment_id).first()
 

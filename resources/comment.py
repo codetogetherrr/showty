@@ -17,6 +17,17 @@ hashtag_schema = HashtagSchema()
 class Comment(Resource):
 
     @jwt_required
+    def get(self, post_id):
+
+        login = get_jwt_identity()
+        user = UserModel.find_by_username(login)
+        if user:
+            last_comment = CommentModel.get_last_comment(post_id)
+            return comment_schema.dump(last_comment)
+        else:
+            return {"message": "User not found"}, 404
+
+    @jwt_required
     def post(self):
 
         login = get_jwt_identity()
