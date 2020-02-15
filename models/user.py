@@ -34,7 +34,7 @@ class UserModel(db.Model):
 
     @classmethod
     def search_by_username(cls, keyword):
-        return cls.query.filter(UserModel.login.like("%" + keyword + "%")).all()
+        return cls.query.filter(UserModel.login.like(keyword + "%")).all()
 
     @classmethod
     def find_by_email(cls, email):

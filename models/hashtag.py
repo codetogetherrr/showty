@@ -17,6 +17,10 @@ class HashtagModel(db.Model):
         return hashtags
 
     @classmethod
+    def search_by_hashtag(cls, keyword):
+        return cls.query.filter(HashtagModel.hashtag.like(keyword + "%")).all()
+
+    @classmethod
     def get_items_with_hashtag(cls, hashtag):
         items = cls.query.filter_by(hashtag=hashtag)
         return items
