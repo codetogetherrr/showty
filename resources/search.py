@@ -15,6 +15,6 @@ class Search(Resource):
         login = get_jwt_identity()
         user = UserModel.find_by_username(login)
         if user:
-            return {user_schema.dump(x) for x in UserModel.search_by_username(keyword)}, 200
+            return [user_schema.dump(x) for x in UserModel.search_by_username(keyword)], 200
         else:
             return {"message": "User not found"}, 404
