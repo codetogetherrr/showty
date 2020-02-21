@@ -111,7 +111,7 @@ api.add_resource(Follow, '/follow', methods=['POST'], endpoint='addfollow')
 api.add_resource(Follow, '/follow/<follower_login>/<followee_login>', methods=['GET'], endpoint='checkfollow')
 api.add_resource(Follows, '/follows/<user_login>')
 api.add_resource(Hashtags, '/hashtags/<hashtag>')
-api.add_resource(Search, '/search/<keyword>')
+api.add_resource(Search, '/search')
 
 
 if __name__ == '__main__':
