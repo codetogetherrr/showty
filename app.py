@@ -110,7 +110,7 @@ api.add_resource(Likes, '/likes/<post_id>')
 api.add_resource(Follow, '/follow', methods=['POST'], endpoint='addfollow')
 api.add_resource(Follow, '/follow/<follower_login>/<followee_login>', methods=['GET'], endpoint='checkfollow')
 api.add_resource(Follows, '/follows/<user_login>')
-api.add_resource(Hashtags, '/hashtags/<hashtag>')
+api.add_resource(Hashtags, '/hashtags')
 api.add_resource(Search, '/search')
 
 
