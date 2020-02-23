@@ -32,7 +32,7 @@ class HashtagModel(db.Model):
 
         items = cls.query.filter_by(hashtag=hashtag).all()
 
-        posts_with_hashtag = PostModel.query.join(items, HashtagModel.post_id == PostModel.post_id).order_by(PostModel.date.desc()).paginate(page=page, per_page=9, error_out=False)
+        posts_with_hashtag = PostModel.query.join(items, PostModel.post_id == HashtagModel.post_id).order_by(PostModel.date.desc()).paginate(page=page, per_page=9, error_out=False)
 
         return posts_with_hashtag
 
