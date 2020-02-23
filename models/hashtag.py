@@ -30,7 +30,7 @@ class HashtagModel(db.Model):
     @classmethod
     def get_paginated_posts_for_hashtag(cls, hashtag, page):
 
-        hashtags = cls.query.filter_by(hashtag=hashtag).all()
+        hashtags = cls.query.filter_by(hashtag=hashtag)
         posts_with_hashtag = PostModel.query.join(hashtags, cls.post_id == PostModel.post_id).order_by(PostModel.date.desc()).paginate(page=page, per_page=9, error_out=False)
 
         return posts_with_hashtag
