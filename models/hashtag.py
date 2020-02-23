@@ -33,6 +33,11 @@ class HashtagModel(db.Model):
         return posts_with_hashtag
 
     @classmethod
+    def get_hashtags_for_post(cls, post_id):
+        items = cls.query.filter_by(post_id=post_id).all()
+        return items
+
+    @classmethod
     def find_only_for_post(cls, hashtag, post_id):
         hashtag = cls.query.filter_by(hashtag=hashtag, post_id=post_id, comment_id=None).first()
         return hashtag

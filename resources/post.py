@@ -3,6 +3,7 @@ from flask import request
 from models.post import PostModel
 from models.user import UserModel
 from models.hashtag import HashtagModel
+from models.comment import CommentModel
 from schemas.post import PostSchema, PostUpdateSchema
 from schemas.hashtag import HashtagSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -53,9 +54,6 @@ class Post(Resource):
         else:
             return {"message": "User not found"}, 404
 
-
-
-
     @jwt_required
     def put(self, post_id):
         post = PostModel.find_by_post_id(post_id)
@@ -83,6 +81,17 @@ class Post(Resource):
     def delete(self, post_id):
         post_delete = PostModel.find_by_post_id(post_id)
         if post_delete.login == get_jwt_identity():
+
+            comments_delete = CommentModel.find_by_post_id(post_delete.post_id)
+            hashtags_delete = HashtagModel.get_hashtags_for_post(post_delete.post_id)
+
+            if comments_delete:
+                for comment in comments_delete:
+                    comment.delete_from_db()
+            if hashtags_delete:
+                for hashtag in hashtags_delete:
+                    hashtag.delete_from_db()
+
             post_delete.delete_from_db()
             return {'message': 'Post deleted'}, 200
         else:
