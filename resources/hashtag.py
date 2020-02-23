@@ -5,6 +5,11 @@ from models.hashtag import HashtagModel
 from models.user import UserModel
 from schemas.hashtag import HashtagSchema
 
+from schemas.post import PostSchema
+
+
+post_schema = PostSchema()
+
 
 hashtag_schema = HashtagSchema()
 
@@ -22,7 +27,7 @@ class Hashtags(Resource):
         user = UserModel.find_by_username(login)
         args = self.parser.parse_args()
         if user:
-            return {'items': [hashtag_schema.dump(x) for x in HashtagModel.get_paginated_posts_for_hashtag(args['hashtag'], args['page'])]}
+            return {'items': [post_schema.dump(x) for x in HashtagModel.get_paginated_posts_for_hashtag(args['hashtag'], args['page']).items]}
 
         else:
             return {"message": "User not found" }, 404
