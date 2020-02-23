@@ -27,7 +27,7 @@ class Hashtags(Resource):
         user = UserModel.find_by_username(login)
         args = self.parser.parse_args()
         if user:
-            return {'items': [post_schema.dump(x) for x in HashtagModel.get_paginated_posts_for_hashtag(args['hashtag'], args['page']).items]}
+            return {'posts_with_hashtag': [post_schema.dump(x) for x in HashtagModel.get_paginated_posts_for_hashtag(args['hashtag'], args['page']).items]}
 
         else:
             return {"message": "User not found" }, 404
