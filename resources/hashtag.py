@@ -13,6 +13,7 @@ class Hashtags(Resource):
 
     parser = reqparse.RequestParser()
     parser.add_argument('hashtag', required=True, type=str, help="You have to provide hashtag")
+    parser.add_argument('page', required=True, type=int, help="You have to provide page of posts with hashtag")
 
     @jwt_required
     def post(self):
@@ -21,7 +22,7 @@ class Hashtags(Resource):
         user = UserModel.find_by_username(login)
         args = self.parser.parse_args()
         if user:
-            return {'items': [hashtag_schema.dump(x) for x in HashtagModel.get_items_with_hashtag(args['hashtag'])]}
+            return {'items': [hashtag_schema.dump(x) for x in HashtagModel.get_paginated_posts_for_hashtag(args['hashtag'], args['page'])]}
 
         else:
             return {"message": "User not found" }, 404

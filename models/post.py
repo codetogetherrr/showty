@@ -1,6 +1,7 @@
 from db import db
 
 
+
 class PostModel(db.Model):
 
     __tablename__ = 'posts'
