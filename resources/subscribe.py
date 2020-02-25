@@ -62,7 +62,7 @@ class Subscribe(Resource):
                     new_subscription.save_to_db()
                     return {"message": "hashtag subscribed"}, 201
             else:
-                return {"message": "User to follow not found"}, 404
+                return {"message": "hashtag to subscribe not found"}, 404
 
         else:
             return {"message": "User not found"}, 404
