@@ -17,6 +17,7 @@ from resources.follow import Follow
 from resources.follow import Follows
 from resources.hashtag import Hashtag, Hashtags
 from resources.search import Search
+from resources.subscribe import Subscribe, Subscriptions
 
 
 
@@ -113,6 +114,8 @@ api.add_resource(Follows, '/follows/<user_login>')
 api.add_resource(Hashtags, '/hashtags')
 api.add_resource(Hashtag, '/hashtag')
 api.add_resource(Search, '/search')
+api.add_resource(Subscribe, '/subscribe')
+api.add_resource(Subscriptions, '/subscriptions')
 
 
 if __name__ == '__main__':
