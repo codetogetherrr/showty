@@ -114,7 +114,7 @@ api.add_resource(Follows, '/follows/<user_login>')
 api.add_resource(Hashtags, '/hashtags')
 api.add_resource(Hashtag, '/hashtag')
 api.add_resource(Search, '/search')
-api.add_resource(Subscribe, '/subscribe')
+api.add_resource(Subscribe, '/subscribe/<hashtag>/<subscriber>')
 api.add_resource(Subscriptions, '/subscriptions')
 
 
