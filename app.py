@@ -116,7 +116,7 @@ api.add_resource(Hashtag, '/hashtag')
 api.add_resource(Search, '/search')
 api.add_resource(Subscribe, '/subscribe', methods=['POST'], endpoint='subscribe')
 api.add_resource(Subscribe, '/subscribe/<hashtag>/<subscriber>', methods=['GET'], endpoint='checksubscription')
-api.add_resource(Subscriptions, '/subscriptions')
+api.add_resource(Subscriptions, '/subscriptions/<hashtag>')
 
 
 if __name__ == '__main__':
