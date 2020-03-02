@@ -34,7 +34,7 @@ class HashtagModel(db.Model):
 
     @classmethod
     def get_last_post_with_hashtag(cls, hashtag):
-        last_post_with_hashtag = cls.query.filter_by(hashtag=hashtag).order_by(PostModel.date.desc()).first()
+        last_post_with_hashtag = PostModel.query.join(cls, PostModel.post_id == cls.post_id).filter_by(hashtag=hashtag).order_by(PostModel.date.desc()).first()
         return last_post_with_hashtag
 
     @classmethod

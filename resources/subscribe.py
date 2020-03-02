@@ -70,7 +70,7 @@ class Subscribe(Resource):
 class Subscriptions(Resource):
 
     @jwt_required
-    def post(self, hashtag):
+    def get(self, hashtag):
 
         login = get_jwt_identity()
         user = UserModel.find_by_username(login)
