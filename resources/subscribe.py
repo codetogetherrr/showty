@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask import request
 from models.subscribe import SubscribeModel
 from models.user import UserModel
+from models.hashtag import HashtagModel
 from schemas.subscribe import SubscribeSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
@@ -47,7 +48,7 @@ class Subscribe(Resource):
                 new_subscription = subscribe_schema.load(request.get_json(), partial=True)
             except ValidationError as err:
                 return err.messages, 400
-            hashtag_to_subscribe = SubscribeModel.find_by_hashtag(new_subscription.hashtag)
+            hashtag_to_subscribe = HashtagModel.find_if_hashtag_exist(new_subscription.hashtag)
             if hashtag_to_subscribe:
 
                 existing_subscription = SubscribeModel.find_specific_subscription(user.login, new_subscription.hashtag)

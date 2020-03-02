@@ -28,6 +28,11 @@ class HashtagModel(db.Model):
         return items
 
     @classmethod
+    def find_if_hashtag_exist(cls, hashtag):
+        item = cls.query.filter_by(hashtag=hashtag).first()
+        return item
+
+    @classmethod
     def get_paginated_posts_for_hashtag(cls, hashtag, page):
         posts_with_hashtag = PostModel.query.join(cls, PostModel.post_id == cls.post_id).filter_by(hashtag=hashtag).order_by(PostModel.date.desc()).paginate(page=page, per_page=9, error_out=False)
         return posts_with_hashtag
