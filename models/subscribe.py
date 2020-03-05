@@ -19,6 +19,10 @@ class SubscribeModel(db.Model):
         return cls.query.filter_by(hashtag=hashtag).first()
 
     @classmethod
+    def find_users_subscirptions(cls, subscriber):
+        return cls.query.filter_by(subscriber=subscriber).all()
+
+    @classmethod
     def find_specific_subscription(cls, subscriber, hashtag):
         subscription = cls.query.filter_by(subscriber=subscriber, hashtag=hashtag).first()
         return subscription

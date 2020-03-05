@@ -16,8 +16,13 @@ class PostModel(db.Model):
 
     @classmethod
     def get_paginated_posts(cls, login, page):
-        user_list = cls.query.filter_by(login=login).order_by(PostModel.date.desc()).paginate(page=page, per_page=9, error_out=False)
-        return user_list
+        posts = cls.query.filter_by(login=login).order_by(PostModel.date.desc()).paginate(page=page, per_page=9, error_out=False)
+        return posts
+
+    @classmethod
+    def get_posts_of_user(cls, login):
+        posts = cls.query.filter_by(login=login).all()
+        return posts
 
     @classmethod
     def find_by_post_id(cls, post_id):
