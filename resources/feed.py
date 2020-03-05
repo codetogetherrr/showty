@@ -23,9 +23,9 @@ class Feed(Resource):
         if user:
             posts_of_feed = PostModel.query\
                 .join(HashtagModel, PostModel.post_id == HashtagModel.post_id)\
-                .join(SubscribeModel, SubscribeModel.hashtag == HashtagModel.hashtag)\
+                .join(SubscribeModel, SubscribeModel.hashtag == HashtagModel.hashtag) \
+                .filter_by(subscriber=login) \
                 .join(FollowModel, FollowModel.follower_login == SubscribeModel.subscriber)\
-                .filter_by(subscriber=login)\
                 .order_by(PostModel.date.desc())
 
             return {'posts_of_feed': [post_schema.dump(x) for x in posts_of_feed.items]}
