@@ -21,12 +21,17 @@ class Feed(Resource):
         user = UserModel.find_by_username(login)
 
         if user:
-            posts_of_feed = PostModel.query\
+            posts_of_followees = PostModel.query \
+                .join(FollowModel, FollowModel.followee_login == PostModel.login) \
+                .filter_by(follower_login=login)
+
+            posts_of_hashtag = PostModel.query \
                 .join(HashtagModel, PostModel.post_id == HashtagModel.post_id)\
                 .join(SubscribeModel, SubscribeModel.hashtag == HashtagModel.hashtag) \
                 .filter_by(subscriber=login) \
-                .join(FollowModel, FollowModel.follower_login == SubscribeModel.subscriber)\
-                .order_by(PostModel.date.desc())
+
+            posts_of_feed = posts_of_followees.union(posts_of_hashtag).order_by(PostModel.date.desc())
+
 
             return {'posts_of_feed': [post_schema.dump(x) for x in posts_of_feed]}
 
