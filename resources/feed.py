@@ -24,7 +24,7 @@ class Feed(Resource):
             posts_of_feed = PostModel.query\
                 .join(HashtagModel, PostModel.post_id == HashtagModel.post_id)\
                 .join(SubscribeModel, SubscribeModel.hashtag == HashtagModel.hashtag)\
-                .join(FollowModel, FollowModel.follower == SubscribeModel.subscriber)\
+                .join(FollowModel, FollowModel.follower_login == SubscribeModel.subscriber)\
                 .filter_by(subscriber=login)\
                 .order_by(PostModel.date.desc())
 
