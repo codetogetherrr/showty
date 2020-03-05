@@ -28,7 +28,7 @@ class Feed(Resource):
                 .join(FollowModel, FollowModel.follower_login == SubscribeModel.subscriber)\
                 .order_by(PostModel.date.desc())
 
-            return {'posts_of_feed': [post_schema.dump(x) for x in posts_of_feed.items]}
+            return {'posts_of_feed': [post_schema.dump(x) for x in posts_of_feed]}
 
         else:
 
