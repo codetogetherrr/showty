@@ -15,7 +15,7 @@ post_schema = PostSchema()
 class Feed(Resource):
 
     @jwt_required
-    def get(self):
+    def get(self, page):
 
         login = get_jwt_identity()
         user = UserModel.find_by_username(login)
@@ -30,7 +30,7 @@ class Feed(Resource):
                 .join(SubscribeModel, SubscribeModel.hashtag == HashtagModel.hashtag) \
                 .filter_by(subscriber=login) \
 
-            posts_of_feed = posts_of_followees.union(posts_of_hashtag).order_by(PostModel.date.desc())
+            posts_of_feed = posts_of_followees.union(posts_of_hashtag).order_by(PostModel.date.desc()).paginate(page=page, per_page=9, error_out=False)
 
 
             return {'posts_of_feed': [post_schema.dump(x) for x in posts_of_feed]}
