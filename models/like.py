@@ -7,7 +7,7 @@ class LikeModel(db.Model):
 
     likes_id = db.Column(db.Integer,primary_key=True)
     post_id = db.Column(db.Integer, nullable=False)
-    login = db.Column(db.String(80))
+    login = db.Column(db.String(80), nullable=False)
 
         
     @classmethod
