@@ -33,7 +33,7 @@ class Like(Resource):
                 return {'message': 'unliked'}, 200
             else:
 
-                new_like.user_id = login
+                new_like.login = login
 
                 new_like.save_to_db()
                 return {"message": "liked"}, 201
