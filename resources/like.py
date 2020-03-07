@@ -12,7 +12,24 @@ like_schema = LikeSchema()
 
 class Like(Resource):
 
-    
+    @jwt_required
+    def get(self, post_id):
+
+        login = get_jwt_identity()
+        user = UserModel.find_by_username(login)
+
+        if user:
+            existing_like = LikeModel.find_by_user_id(login, post_id)
+
+            if existing_like:
+
+                return {"message": "unliked"}, 200
+            else:
+
+                return {"message": "liked"}, 201
+        else:
+            return {"message": "User not found"}, 404
+
     @jwt_required
     def post(self):
 
