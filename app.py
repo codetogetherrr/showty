@@ -119,7 +119,7 @@ api.add_resource(Search, '/search')
 api.add_resource(Subscribe, '/subscribe', methods=['POST'], endpoint='subscribe')
 api.add_resource(Subscribe, '/subscribe/<hashtag>/<subscriber>', methods=['GET'], endpoint='checksubscription')
 api.add_resource(Subscriptions, '/subscriptions/<hashtag>')
-api.add_resource(Feed, '/feed/<int:page>/<per_page>')
+api.add_resource(Feed, '/feed/<int:page>/<int:per_page>')
 
 
 if __name__ == '__main__':
