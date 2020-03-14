@@ -33,7 +33,7 @@ class Feed(Resource):
             posts_of_feed = posts_of_followees.union(posts_of_hashtag).order_by(PostModel.date.desc()).paginate(page=page, per_page=per_page, error_out=False)
 
 
-            return {'posts_of_feed': [post_schema.dump(x) for x in posts_of_feed]}
+            return {'posts_of_feed': [post_schema.dump(x) for x in posts_of_feed.items]}
 
         else:
 
