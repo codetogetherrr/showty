@@ -19,6 +19,7 @@ from resources.follow import Follows
 from resources.hashtag import Hashtag, Hashtags
 from resources.search import Search
 from resources.subscribe import Subscribe, Subscriptions
+from resources.message import Messages
 
 
 
@@ -120,6 +121,7 @@ api.add_resource(Subscribe, '/subscribe', methods=['POST'], endpoint='subscribe'
 api.add_resource(Subscribe, '/subscribe/<hashtag>/<subscriber>', methods=['GET'], endpoint='checksubscription')
 api.add_resource(Subscriptions, '/subscriptions/<hashtag>')
 api.add_resource(Feed, '/feed/<int:page>/<int:per_page>')
+api.add_resource(Messages, '/messages/<loginA>/<loginB>')
 
 
 if __name__ == '__main__':
