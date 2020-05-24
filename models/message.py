@@ -15,7 +15,7 @@ class MessageModel(db.Model):
 
     @classmethod
     def find_by_pair(cls, loginA, loginB):
-        messages = cls.query.filter(or_(and_(cls.sender == loginA, cls.receiver == loginB), and_(cls.sender == loginB, cls.receiver == loginA))).order_by(MessageModel.createdAt.asc())
+        messages = cls.query.filter(or_(and_(cls.sender == loginA, cls.receiver == loginB), and_(cls.sender == loginB, cls.receiver == loginA))).order_by(MessageModel.sentAt.asc())
         return messages
 
     def save_to_db(self):
