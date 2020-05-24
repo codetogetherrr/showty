@@ -9,8 +9,8 @@ class MessageModel(db.Model):
     sender = db.Column(db.String(80), nullable=False)
     receiver = db.Column(db.String(80), nullable=False)
     text = db.Column(db.String(640), nullable=False)
-    createdAt = db.Column(db.String(80), nullable=False)
-    updatedAt = db.Column(db.String(80), nullable=False)
+    sentAt = db.Column(db.String(80), nullable=False)
+
 
 
     @classmethod

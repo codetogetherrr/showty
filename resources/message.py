@@ -10,4 +10,4 @@ class Messages(Resource):
 
     def get(self, loginA, loginB):
 
-        return {'messages': [message_schema.dump(x) for x in MessageModel.find_by_pair(loginA, loginB)]}
+        return {'text_messages': [message_schema.dump(x) for x in MessageModel.find_by_pair(loginA, loginB)]}
