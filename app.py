@@ -20,6 +20,7 @@ from resources.hashtag import Hashtag, Hashtags
 from resources.search import Search
 from resources.subscribe import Subscribe, Subscriptions
 from resources.message import Messages
+from resources.conversations import Conversations
 
 
 
@@ -122,6 +123,7 @@ api.add_resource(Subscribe, '/subscribe/<hashtag>/<subscriber>', methods=['GET']
 api.add_resource(Subscriptions, '/subscriptions/<hashtag>')
 api.add_resource(Feed, '/feed/<int:page>/<int:per_page>')
 api.add_resource(Messages, '/messages/<loginA>/<loginB>')
+api.add_resource(Conversations, '/conversations_of/<login>')
 
 
 if __name__ == '__main__':

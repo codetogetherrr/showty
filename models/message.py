@@ -18,6 +18,14 @@ class MessageModel(db.Model):
         messages = cls.query.filter(or_(and_(cls.sender == loginA, cls.receiver == loginB), and_(cls.sender == loginB, cls.receiver == loginA))).order_by(MessageModel.sentAt.asc())
         return messages
 
+    @classmethod
+    def find_conversation_addressees(cls, login):
+        query1 = cls.query.with_entities(cls.receiver).filter_by(sender=login)
+        query2 = cls.query.with_entities(cls.sender).filter_by(receiver=login)
+
+        addressees = query1.union(query2).all()
+        return addressees
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
