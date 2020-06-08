@@ -1,5 +1,5 @@
 from db import db
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, func
 
 class MessageModel(db.Model):
 
@@ -20,11 +20,15 @@ class MessageModel(db.Model):
 
     @classmethod
     def find_conversation_addressees(cls, login):
-        query1 = cls.query.with_entities(cls.receiver).filter_by(sender=login)
-        query2 = cls.query.with_entities(cls.sender).filter_by(receiver=login)
+        query1 = cls.query.with_entities(cls.receiver, cls.sentAt).filter_by(sender=login)
+        query2 = cls.query.with_entities(cls.sender, cls.sentAt).filter_by(receiver=login)
 
         addressees = query1.union(query2).all()
-        return addressees
+
+        addresses_sorted = addressees.query(addressees.receiver, func.max(addressees.sentAt)).group_by(
+            addressees.receiver).order_by(func.max(addressees.sentAt).desc())
+
+        return addresses_sorted
 
     def save_to_db(self):
         db.session.add(self)
