@@ -23,7 +23,7 @@ class MessageModel(db.Model):
         #query1 = cls.query.with_entities(cls.receiver, cls.sentAt).filter_by(sender=login)
         #query2 = cls.query.with_entities(cls.sender, cls.sentAt).filter_by(receiver=login)
 
-        query_base = cls.query.filter(or_(cls.receiver==login, cls.sender==login)).with_entities(case([(cls.receiver == login, cls.sender)], else_ = cls.receiver))
+        query_base = cls.query.filter(or_(cls.receiver==login, cls.sender==login)).with_entities(case([(cls.receiver == login, cls.sender)], else_ = cls.receiver)).all()
 
         #addressees = query1.union(query2)
 
