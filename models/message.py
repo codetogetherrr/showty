@@ -20,13 +20,13 @@ class MessageModel(db.Model):
 
     @classmethod
     def find_conversation_addressees(cls, login):
-        query1 = cls.query.with_entities(cls.receiver.label("user_name"), cls.sentAt).filter_by(sender=login)
-        query2 = cls.query.with_entities(cls.sender.label("user_name"), cls.sentAt).filter_by(receiver=login)
+        query1 = cls.query.with_entities(cls.receiver, cls.sentAt).filter_by(sender=login)
+        query2 = cls.query.with_entities(cls.sender, cls.sentAt).filter_by(receiver=login)
 
         addressees = query1.union(query2)
 
-        addressees_sorted = addressees.subquery(addressees.user_name, func.max(addressees.sentAt)).group_by(
-            addressees.user_name).order_by(func.max(addressees.sentAt).desc())
+        addressees_sorted = addressees.subquery(cls.receiver, func.max(cls.sentAt)).group_by(
+            cls.receiver).order_by(func.max(cls.sentAt).desc())
 
         return addressees_sorted
 
