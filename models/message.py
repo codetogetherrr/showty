@@ -23,12 +23,12 @@ class MessageModel(db.Model):
         query1 = cls.query.with_entities(cls.receiver, cls.sentAt).filter_by(sender=login)
         query2 = cls.query.with_entities(cls.sender, cls.sentAt).filter_by(receiver=login)
 
-        addressees = query1.union(query2).all()
+        addressees = query1.union(query2)
 
-        addresses_sorted = addressees.query(addressees.receiver, func.max(addressees.sentAt)).group_by(
+        addressees_sorted = addressees.query(addressees.receiver, func.max(addressees.sentAt)).group_by(
             addressees.receiver).order_by(func.max(addressees.sentAt).desc())
 
-        return addresses_sorted
+        return addressees_sorted
 
     def save_to_db(self):
         db.session.add(self)
