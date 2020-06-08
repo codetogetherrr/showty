@@ -26,7 +26,7 @@ class MessageModel(db.Model):
         addressees = query1.union(query2)
 
         addressees_sorted = addressees.subquery(cls.receiver, func.max(cls.sentAt)).group_by(
-            cls.receiver).order_by(func.max(cls.sentAt).desc())
+            cls.receiver).order_by(func.max(cls.sentAt).desc()).all()
 
         return addressees_sorted
 
