@@ -25,7 +25,7 @@ class MessageModel(db.Model):
 
         #query_base = cls.query.filter(or_(cls.receiver==login, cls.sender==login)).with_entities(case([(cls.receiver == login, cls.sender)], else_ = cls.receiver).label("receiver")).all()
         
-        query_base = cls.query.filter(or_(cls.receiver==login, cls.sender==login)).with_entities(case([(cls.receiver == login, cls.sender)], else_ = cls.receiver).label("receiver"), func.max(cls.sentAt)).group_by(receiver).order_by(func.max(cls.sentAt).desc()).all()
+        query_base = cls.query.filter(or_(cls.receiver==login, cls.sender==login)).with_entities(case([(cls.receiver == login, cls.sender)], else_ = cls.receiver).label("receiver"), func.max(cls.sentAt)).group_by('receiver').order_by(func.max(cls.sentAt).desc()).all()
         #addressees = query1.union(query2)
 
         return query_base
