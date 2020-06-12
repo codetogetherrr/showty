@@ -19,6 +19,14 @@ class MessageModel(db.Model):
         return messages
 
     @classmethod
+    def get_latest_for_pair(cls, loginA, loginB):
+        message = cls.query.filter(or_(and_(cls.sender == loginA, cls.receiver == loginB),
+                                        and_(cls.sender == loginB, cls.receiver == loginA))).order_by(
+            MessageModel.sentAt.desc()).first()
+        return message
+
+
+    @classmethod
     def find_conversation_addressees(cls, login):
 
         query_base = cls.query.filter(or_(cls.receiver==login, cls.sender==login)).with_entities(case([(cls.receiver == login, cls.sender)], else_ = cls.receiver).label("receiver"), func.max(cls.sentAt)).group_by(case([(cls.receiver == login, cls.sender)], else_ = cls.receiver)).order_by(func.max(cls.sentAt).desc()).all()
