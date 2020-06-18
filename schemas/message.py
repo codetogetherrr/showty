@@ -6,5 +6,5 @@ class MessageSchema(ma.ModelSchema):
 
     class Meta:
         model = MessageModel
-        dump_only = ("sender", "receiver", "text", "sentAt", "id")
+        dump_only = ("sender", "receiver", "text", "sentAt", "id", "read")
 

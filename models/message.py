@@ -10,6 +10,7 @@ class MessageModel(db.Model):
     receiver = db.Column(db.String(80), nullable=False)
     text = db.Column(db.String(640), nullable=False)
     sentAt = db.Column(db.String(80), nullable=False)
+    read = db.Column(db.Boolean, nullable=False)
 
 
 
