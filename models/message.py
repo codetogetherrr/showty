@@ -15,6 +15,11 @@ class MessageModel(db.Model):
 
 
     @classmethod
+    def find_by_pair_unread(cls, loginA, loginB):
+        unread_messages = cls.query.filter_by(read=False).filter(or_(and_(cls.sender == loginA, cls.receiver == loginB), and_(cls.sender == loginB, cls.receiver == loginA))).order_by(MessageModel.sentAt.asc())
+        return unread_messages
+
+    @classmethod
     def find_by_pair(cls, loginA, loginB):
         messages = cls.query.filter(or_(and_(cls.sender == loginA, cls.receiver == loginB), and_(cls.sender == loginB, cls.receiver == loginA))).order_by(MessageModel.sentAt.asc())
         return messages
