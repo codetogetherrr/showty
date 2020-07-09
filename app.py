@@ -73,7 +73,7 @@ def login():
     user = UserModel.find_by_username(login)
     if user and check_password_hash(user.password, password):
         if user.activated:
-            ret = {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=3600)),
+            ret = {'access_token': create_access_token(identity=login,expires_delta=timedelta(seconds=os.environ.get('JWT_EXPIRATION_TIME', ''))),
                 'refresh_token': create_refresh_token(identity=login)}
             return jsonify(ret), 200
         return jsonify({'message':'Account not active. Please activate via link sent to {}'.format(user.email)}), 400
