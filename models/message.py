@@ -8,9 +8,10 @@ class MessageModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender = db.Column(db.String(80), nullable=False)
     receiver = db.Column(db.String(80), nullable=False)
-    text = db.Column(db.String(640), nullable=False)
+    text = db.Column(db.String(640), nullable=True)
     sentAt = db.Column(db.String(80), nullable=False)
     read = db.Column(db.Boolean, nullable=False)
+    url = db.Column(db.String(80), nullable=True)
 
 
 
