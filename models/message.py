@@ -11,9 +11,7 @@ class MessageModel(db.Model):
     text = db.Column(db.String(640), nullable=True)
     sentAt = db.Column(db.String(80), nullable=False)
     read = db.Column(db.Boolean, nullable=False)
-    url = db.Column(db.String(80), nullable=True)
-
-
+    url = db.Column(db.String(200), nullable=True)
 
     @classmethod
     def find_by_pair_unread(cls, loginA, loginB):
