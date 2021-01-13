@@ -5,8 +5,6 @@ from models.user import UserModel
 from models.hashtag import HashtagModel
 
 
-
-
 class Search(Resource):
 
     parser = reqparse.RequestParser()

@@ -8,7 +8,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 
 
-subscribe_schema = SubscribeSchema()
+subscribe_schema = SubscribeSchema(many=True)
 
 
 class Subscribe(Resource):

@@ -10,8 +10,8 @@ import requests
 import os
 import re
 
-user_schema = UserSchema()
-user_update_schema = UserUpdateSchema()
+user_schema = UserSchema(many=True)
+user_update_schema = UserUpdateSchema(many=True)
 
 
 class UserFacebookRegisterLogin(Resource):

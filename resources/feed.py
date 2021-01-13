@@ -9,7 +9,7 @@ from models.subscribe import SubscribeModel
 
 from schemas.post import PostSchema
 
-post_schema = PostSchema()
+post_schema = PostSchema(many=True)
 
 
 class Feed(Resource):
