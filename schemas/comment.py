@@ -2,7 +2,7 @@ from ma import ma
 from models.comment import CommentModel
 
 
-class CommentSchema(ma.ModelSchema):
+class CommentSchema(ma.Schema):
 
     class Meta:
         model = CommentModel
@@ -10,7 +10,7 @@ class CommentSchema(ma.ModelSchema):
 
 
 
-class CommentUpdateSchema(ma.ModelSchema):
+class CommentUpdateSchema(ma.Schema):
 
     class Meta:
         model = CommentModel

@@ -2,7 +2,7 @@ from ma import ma
 from models.follow import FollowModel
 
 
-class FollowSchema(ma.ModelSchema):
+class FollowSchema(ma.Schema):
 
     class Meta:
         model = FollowModel

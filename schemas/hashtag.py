@@ -2,7 +2,7 @@ from ma import ma
 from models.hashtag import HashtagModel
 
 
-class HashtagSchema(ma.ModelSchema):
+class HashtagSchema(ma.Schema):
 
     class Meta:
         model = HashtagModel
