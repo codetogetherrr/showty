@@ -2,7 +2,7 @@ from ma import ma
 from models.subscribe import SubscribeModel
 
 
-class SubscribeSchema(ma.Schema):
+class SubscribeSchema(ma.SQLAlchemySchema):
 
     class Meta:
         model = SubscribeModel
