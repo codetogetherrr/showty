@@ -1,14 +1,14 @@
 from ma import ma
 from models.post import PostModel
 
-class PostSchema(ma.SQLAlchemySchema):
+class PostSchema(ma.SQLAlchemyAutoSchema):
 
     class Meta:
         model = PostModel
         dump_only = ("post_id","login", "date")
 
 
-class PostUpdateSchema(ma.SQLAlchemySchema):
+class PostUpdateSchema(ma.SQLAlchemyAutoSchema):
 
     class Meta:
         model = PostModel
