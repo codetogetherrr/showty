@@ -2,7 +2,7 @@ from ma import ma
 from models.like import LikeModel
 
 
-class LikeSchema(ma.SQLAlchemySchema):
+class LikeSchema(ma.SQLAlchemyAutoSchema):
 
     class Meta:
         model = LikeModel
