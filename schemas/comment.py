@@ -2,7 +2,7 @@ from ma import ma
 from models.comment import CommentModel
 
 
-class CommentSchema(ma.SQLAlchemySchema):
+class CommentSchema(ma.SQLAlchemyAutoSchema):
 
     class Meta:
         model = CommentModel
@@ -10,7 +10,7 @@ class CommentSchema(ma.SQLAlchemySchema):
 
 
 
-class CommentUpdateSchema(ma.SQLAlchemySchema):
+class CommentUpdateSchema(ma.SQLAlchemyAutoSchema):
 
     class Meta:
         model = CommentModel
