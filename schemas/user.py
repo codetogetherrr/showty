@@ -1,7 +1,7 @@
 from ma import ma
 from models.user import UserModel
 
-class UserUpdateSchema(ma.Schema):
+class UserUpdateSchema(ma.SQLAlchemySchema):
 
     class Meta:
         model = UserModel
@@ -12,7 +12,7 @@ class UserUpdateSchema(ma.Schema):
 
 
 
-class UserSchema(ma.Schema):
+class UserSchema(ma.SQLAlchemySchema):
 
     class Meta:
         model = UserModel
