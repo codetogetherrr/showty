@@ -2,7 +2,7 @@ from ma import ma
 from models.message import MessageModel
 
 
-class MessageSchema(ma.Schema):
+class MessageSchema(ma.SQLAlchemySchema):
 
     class Meta:
         model = MessageModel
